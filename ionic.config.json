@@ -1,0 +1,7 @@
+{
+  "name": "egresados2020",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

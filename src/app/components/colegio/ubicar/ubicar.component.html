@@ -1,0 +1,26 @@
+<ion-header class="animated fadeInLeft">    
+  <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+          <ion-button (click) = "salir()">
+              <i class="fas fa-backspace fa-2x" style="color: rgb(245, 245, 245);"></i>
+          </ion-button>
+      </ion-buttons>
+      <ion-title>Agregar Colegio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="item-grid">
+    <ion-list >
+      <ion-item>
+        <ion-input type="text" 
+                   placeholder="localidad" 
+                   [(ngModel)]="localidad" 
+                   (keyup.enter) = "UbicaLocalidad()"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <app-mapa-ubicar [ubicacion] = "ubicacion" (ubicado)="ubicado($event)"></app-mapa-ubicar>
+    </ion-list>
+  </div>
+</ion-content>

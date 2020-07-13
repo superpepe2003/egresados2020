@@ -1,0 +1,21 @@
+import { IColegio } from './colegio';
+
+
+export interface IUsuario {
+    _id: string;
+    email: string;
+    password: string;
+    img: string;
+    role: string;
+    estado: boolean;
+    nombre: string;
+    apellido: string;
+    fechaNac: Date;
+    colegio: string;
+    redSocial: {
+        tipo: string,
+        user: string
+    }[];
+    colegios: IColegio[];
+}
+

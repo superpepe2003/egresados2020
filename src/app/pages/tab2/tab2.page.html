@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="presentAction()">
+        <i class="fas fa-plus-circle fa-2x" style="color: rgb(247, 100, 16) !important;"></i>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <app-colegios [colegios]="colegios"></app-colegios>
+
+</ion-content>

@@ -1,0 +1,23 @@
+<agm-map *ngIf="!isTodos"
+    [latitude]="ubicacion.lat"
+    [longitude]="ubicacion.lng"
+    [zoom]="14"
+    [zoomControl]="true"
+                (mapClick) = "crearMarcador( $event )">
+
+    <agm-marker *ngIf="marcador" [latitude]="marcador.lat" [longitude]="marcador.lng"></agm-marker>
+
+</agm-map>
+
+<agm-map *ngIf="isTodos"
+    [latitude]="ubicacion.lat"
+    [longitude]="ubicacion.lng"
+    [zoom]="8"
+    [zoomControl]="true"
+                >
+
+                <agm-marker *ngFor="let cole of colegios"
+                [latitude]="cole.ubicacion.lat" 
+                [longitude]="cole.ubicacion.lng"></agm-marker>
+
+  </agm-map>

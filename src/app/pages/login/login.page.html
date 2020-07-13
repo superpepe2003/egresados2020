@@ -1,0 +1,114 @@
+<ion-header class="animated fadeInLeft">
+    <ion-toolbar color="primary">
+        <ion-title>Login</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="animated fadeInLeft">
+
+  <form (ngSubmit)="onLogin()" [formGroup]="forma" autocomplete="false" class="custom-form" style="height: 100%;">
+    <ion-grid fixed class = "grid-repartido">
+        <ion-row>
+            <ion-col>
+                <img class="login-icon" src="../../../assets/images/logo.png">
+            </ion-col>  
+        </ion-row>
+        
+        <ion-row>
+            <ion-col>
+                <ion-list>
+                    
+                    <ion-item>
+                        <ion-label position="floating" class="mb-3">Email</ion-label>
+                        <ion-input name="email" 
+                                    type="email" 
+                                    formControlName="email"
+                                    [class.is-invalid] = "campoNoValido('email')" ></ion-input>
+                        
+                            <small *ngIf="campoNoValido('email')" class="text-danger">
+                                No es 1 correo valido
+                            </small>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="floating" class="mb-3">Contraseña</ion-label>
+                        <ion-input name="password" 
+                                    type="password"
+                                    formControlName="password"
+                                    [class.is-invalid]= "campoNoValido('password')"></ion-input>
+            
+                        <small *ngIf="campoNoValido('password')" class="text-danger">
+                            El password debe tener como minimo 6 caracteres
+                        </small>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-button (click)="onLogin()" expand="full">
+                    Ingresar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-button (click)="register()" expand="full" fill="outline" size="small">
+                    Crear cuenta</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+  </form>
+  <!-- <form (ngSubmit)="onLogin()" [formGroup]="forma" autocomplete="false" class="custom-form" >
+      <ion-grid fixed>
+          <ion-row>
+              <ion-col>
+                  <img class="login-icon" src="../../../assets/images/logo.png">
+              </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col>
+                  <ion-list>
+                      <ion-item>
+                          <ion-label position="floating" class="mb-3">Email</ion-label>
+                          <ion-input name="email" 
+                                     type="email" 
+                                     formControlName="email"
+                                     [class.is-invalid] = "campoNoValido('email')"></ion-input>
+                          
+                              <small *ngIf="campoNoValido('email')" class="text-danger">
+                                   No es 1 correo valido
+                              </small>
+                      </ion-item>
+                      <ion-item>
+                          <ion-label position="floating" class="mb-3">Contraseña</ion-label>
+                          <ion-input name="password" 
+                                     type="password"
+                                     formControlName="password"
+                                     [class.is-invalid]= "campoNoValido('password')"></ion-input>
+
+                          <small *ngIf="campoNoValido('password')" class="text-danger">
+                              El password debe tener como minimo 6 caracteres
+                          </small>
+                      </ion-item>
+                  </ion-list>
+              </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col>
+                  <ion-button (click)="onLogin()" expand="full">
+                      Ingresar
+                  </ion-button>
+              </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col>
+                  <ion-button (click)="onRegister()" expand="full" fill="outline" size="small">
+                      Crear cuenta</ion-button>
+              </ion-col>
+          </ion-row>
+      </ion-grid>
+  </form> -->
+
+
+</ion-content>

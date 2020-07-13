@@ -1,0 +1,13 @@
+<agm-map
+    [latitude]="ubicacion.lat"
+    [longitude]="ubicacion.lng"
+    [zoom]="18"
+    [zoomControl]="true">
+
+    <agm-marker [latitude]="ubicacion.lat" [longitude]="ubicacion.lng">
+        <agm-info-window>
+            <strong> {{ nombre }} </strong>                    
+        </agm-info-window>
+    </agm-marker>
+
+  </agm-map>

@@ -1,0 +1,17 @@
+<ion-header class="animated zoomIn">    
+  <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+          <ion-button (click) = "salir()">
+              <i class="fas fa-backspace fa-2x" style="color: rgb(245, 245, 245);"></i>
+          </ion-button>
+      </ion-buttons>
+      <ion-title class="titulo">Lista {{ titulo }} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="animated zoomIn">
+  
+<app-alumnos [alumnos] = "this.alumnos"></app-alumnos>
+
+
+</ion-content>

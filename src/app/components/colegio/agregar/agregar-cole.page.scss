@@ -1,0 +1,13 @@
+.item-grid{   
+    display: grid;
+    height: 100%;
+    width: 100%;
+    grid-template-rows: 1fr 1fr 3em;
+    grid-template-columns: 1fr;
+    padding-bottom: 0.1em;
+}
+
+.item-grid agm-map{
+    width: 100%;
+    height: 100%;
+}
