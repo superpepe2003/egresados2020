@@ -14,9 +14,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { ComponentsModule } from './components/components.module';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
+import { AngularFireStorageModule } from '@angular/fire/storage';
+
 import { AgmCoreModule } from '@agm/core';
 import { environment } from '../environments/environment';
-import { DomSanitizerUrlPipe } from './pipes/dom-sanitizer-url.pipe';
+
+import { Camera } from '@ionic-native/camera/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,12 +34,17 @@ import { DomSanitizerUrlPipe } from './pipes/dom-sanitizer-url.pipe';
     HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    AngularFireModule.initializeApp( environment.firebaseConfig, 'Egresados2020' ),
+    AngularFireAuthModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
     AgmCoreModule.forRoot({
       apiKey: environment.api_key_map
     }),
     IonicStorageModule.forRoot()],
   providers: [
     StatusBar,
+    Camera,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

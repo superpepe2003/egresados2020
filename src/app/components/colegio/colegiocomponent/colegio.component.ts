@@ -14,6 +14,7 @@ import { AgregarColePage } from '../agregar/agregar-cole.page';
 export class ColegioComponent implements OnInit {
 
   @Input() colegio: IColegio;
+  @Output() coleActualiza = new EventEmitter();
 
   url = '';
 
@@ -67,6 +68,10 @@ export class ColegioComponent implements OnInit {
       });
 
       modalLista.present();
+
+      await modalLista.onDidDismiss();
+
+      this.coleActualiza.emit({ ok: true });
   }
 
 

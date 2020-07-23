@@ -1,38 +1,44 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { OAuthServiceService } from '../../services/o-auth-service.service';
 import { Router, RouteConfigLoadEnd } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, NavController } from '@ionic/angular';
 import { IUsuario } from '../../models/usuario';
 import { rejects } from 'assert';
-import { ColegiosService } from '../../services/colegios.service';
+import { UiService } from '../../services/ui.service';
+import { AuthService } from '../../services/auth.service';
+import { ColesService } from '../../services/coles.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
-export class RegisterPage implements OnInit, OnDestroy{
+export class RegisterPage implements OnInit{
 
   forma: FormGroup;
-  subscribeRegistro: Subscription;
+
+
+  slidesOptions = {
+    allowSlidePrev: false,
+    allowSlideNext: false
+  };
 
   @ViewChild( IonSlides, { static: false } ) slides: IonSlides;
 
 
-  constructor(public mAuth: OAuthServiceService,
-              private mCole: ColegiosService,
+  constructor(public mAuth: AuthService,
+              private mCole: ColesService,
               private router: Router,
-              private formBuilder: FormBuilder) {
-
-      this.crearFormulario();
-      this.cargarForm();
+              private formBuilder: FormBuilder,
+              private ui: UiService) {
 
   }
 
 
   ngOnInit() {
+    this.crearFormulario();
+    this.cargarForm();
   }
 
   get redsociales() {
@@ -91,12 +97,15 @@ export class RegisterPage implements OnInit, OnDestroy{
   }
 
   siguiente() {
+    this.slides.lockSwipes(false);
     this.slides.slideNext();
-    console.log(this.campoNoValido('colegio'));
+    this.slides.lockSwipes(true);
   }
 
   atras() {
+    this.slides.lockSwipes(false);
     this.slides.slidePrev();
+    this.slides.lockSwipes(true);
   }
 
   registro(){
@@ -108,16 +117,32 @@ export class RegisterPage implements OnInit, OnDestroy{
 
       usuario = this.forma.value;
 
-      usuario.redSocial = usuario.redSocial.filter( resp => resp.tipo !== null);
+      usuario.redSocial = usuario.redSocial.filter( resp => resp.tipo !== null && resp.user !== null);
 
       console.log(usuario);
 
-      this.subscribeRegistro = this.mAuth.register( usuario )
-              .subscribe( resp => {
-                  if ( resp.ok ) {
-                    this.router.navigate(['/login']);
-                  }
-              });
+      this.mAuth.register( usuario )
+          .then( resp => {
+            this.ui.mostrarInfo('Usuario Creado', 'Usuario creado correctamente!!!');
+            this.router.navigateByUrl('/login');
+          })
+          .catch( err => {
+            let mensaje = 'El usuario no se pudo crear';
+            if ( err.code === 'auth/email-already-in-use') {
+              mensaje = 'El email ya esta en uso';
+            }
+            this.ui.mostrarError('Error', mensaje);
+          });
+
+      // this.subscribeRegistro = this.mAuth.register( usuario )
+      //         .subscribe( resp => {
+      //             if ( resp.ok ) {
+      //               this.ui.mostrarInfo('Usuario', 'Usuario creado correctamente!');
+      //               this.router.navigate(['/login']);
+      //             }
+      //         });
+    } else {
+      this.ui.mostrarError('Error', 'Hay datos que no son validos');
     }
 
   }
@@ -125,12 +150,6 @@ export class RegisterPage implements OnInit, OnDestroy{
   merror(){
     console.log('estoy');
     console.log( this.forma.get('colegio') );
-  }
-
-  ngOnDestroy() {
-    if( this.subscribeRegistro ){
-      this.subscribeRegistro.unsubscribe();
-    }
   }
 
 }

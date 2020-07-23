@@ -6,6 +6,9 @@ export interface IMarcador{
   lng: number;
 }
 
+
+// UBICA EN MAPA LOS DATOS PASADOS EN COLEGIOS, SI SON MUCHOS O ES 1 SOLO
+
 @Component({
   selector: 'app-mapa-ubicar',
   templateUrl: './mapa-ubicar.component.html',

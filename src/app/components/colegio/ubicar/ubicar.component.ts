@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { IColegio } from '../../../models/colegio';
 import { IMarcador } from '../mapaubicar/mapa-ubicar.component';
 import { Subscription } from 'rxjs';
-import { ColegiosService } from '../../../services/colegios.service';
+import { ColesService } from '../../../services/coles.service';
 
 @Component({
   selector: 'app-ubicar',
@@ -22,7 +22,7 @@ export class UbicarComponent implements OnInit, OnDestroy {
     lng: -58.381592 };
 
   constructor( private modalCtrl: ModalController,
-               private mCole: ColegiosService) { }
+               private mCole: ColesService) { }
 
   ngOnInit() {}
 
@@ -32,8 +32,8 @@ export class UbicarComponent implements OnInit, OnDestroy {
 
   ubicado(e){
     this.colegio.ubicacion = { lat: e.lat, lng: e.lng };
-    this.subLocalidad = this.mCole.updateColegio( this.colegio )
-              .subscribe( resp => {
+    this.mCole.updateColegio( this.colegio )
+              .then( resp => {
                 this.modalCtrl.dismiss( { colegio: this.colegio } );
               });
   }

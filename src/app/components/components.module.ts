@@ -11,7 +11,6 @@ import { PipesModule } from '../pipes/pipes.module';
 import { AgregarColePage } from './colegio/agregar/agregar-cole.page';
 import { ColegiosComponent } from './colegio/colegioscomponent/colegios.component';
 import { ColegioComponent } from './colegio/colegiocomponent/colegio.component';
-import { MapacolegioComponent } from './colegio/mapacomponent/mapacolegio.component';
 import { MapaUbicarComponent } from './colegio/mapaubicar/mapa-ubicar.component';
 import { ColegioPopoverComponent } from './colegio/colegio-popover/colegio-popover.component';
 import { UbicarComponent } from './colegio/ubicar/ubicar.component';
@@ -23,22 +22,30 @@ import { AlumnoComponent } from './alumno/alumnocomponent/alumno.component';
 import { AlumnosComponent } from './alumno/alumnoscomponent/alumnos.component';
 import { ListarComponent } from './alumno/listar/listar.component';
 import { UbicarTodosComponent } from './colegio/ubicar-todos/ubicar-todos.component';
+import { MenuComponent } from './varios/menu/menu.component';
+import { RouterModule } from '@angular/router';
+import { ModificarPerfilComponent } from './usuario/modificar-perfil/modificar-perfil.component';
+import { FotoComponent } from './varios/foto/foto.component';
+import { AgregarComponent } from './usuario/agregar/agregar.component';
 
 
 
 @NgModule({
   declarations: [
+    MenuComponent,
+    FotoComponent,
     AgregarColePage,
     ColegiosComponent,
     ColegioComponent,
     ColegioPopoverComponent,
-    MapacolegioComponent,
     MapaUbicarComponent,
     ListarComponent,
     AlumnoComponent,
     AlumnosComponent,
     UbicarComponent,
-    UbicarTodosComponent
+    UbicarTodosComponent,
+    ModificarPerfilComponent,
+    AgregarComponent
   ],
   imports: [
     CommonModule,
@@ -46,15 +53,20 @@ import { UbicarTodosComponent } from './colegio/ubicar-todos/ubicar-todos.compon
     FormsModule,
     AgmCoreModule,
     ReactiveFormsModule,
-    PipesModule
+    PipesModule,
+    RouterModule
   ],
   exports: [
+    MenuComponent,
     AgregarColePage,
     ColegiosComponent,
     MapaUbicarComponent,
     UbicarComponent,
     ListarComponent,
-    UbicarTodosComponent
+    UbicarTodosComponent,
+    ModificarPerfilComponent,
+    AlumnosComponent,
+    AgregarComponent
   ]
 })
 export class ComponentsModule { }

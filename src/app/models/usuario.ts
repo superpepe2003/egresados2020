@@ -11,6 +11,7 @@ export interface IUsuario {
     nombre: string;
     apellido: string;
     fechaNac: Date;
+    tel: string;
     colegio: string;
     redSocial: {
         tipo: string,

@@ -1,5 +1,6 @@
 <div class="card-group" *ngFor="let alumno of alumnos">
   <app-alumno [alumno] = "alumno" 
+              [isVendedor] = "isVendedor"
               (cambiarCole)="cambiarCole($event)" 
               (eliminar)="eliminar($event)">
   </app-alumno>

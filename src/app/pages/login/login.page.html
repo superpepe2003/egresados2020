@@ -43,16 +43,20 @@
                 </ion-list>
             </ion-col>
         </ion-row>
+        <ion-progress-bar *ngIf="cargando" color="primary" type="indeterminate"></ion-progress-bar>
         <ion-row>
             <ion-col>
-                <ion-button (click)="onLogin()" expand="full">
+                <ion-button [disabled] = "cargando" 
+                            (click)="onLogin()" 
+                            expand="full">
                     Ingresar
                 </ion-button>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col>
-                <ion-button (click)="register()" expand="full" fill="outline" size="small">
+                <ion-button [disabled] = "cargando"
+                            (click)="register()" expand="full" fill="outline" size="small">
                     Crear cuenta</ion-button>
             </ion-col>
         </ion-row>

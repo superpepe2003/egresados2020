@@ -1,0 +1,130 @@
+<ion-header class="animated fadeInLeft">    
+  <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+          <ion-button (click) = "salir()">
+              <i class="fas fa-backspace fa-2x" style="color: rgb(245, 245, 245);"></i>
+          </ion-button>
+      </ion-buttons>
+      <ion-title>Editar Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="animated fadeInLeft">
+
+<form (ngSubmit)="modificar()" [formGroup]="forma" autocomplete="false">
+  
+  <ion-slides mode="ios" scrollbar="ios" [options] = "slideOptions">
+     <!-- // ========================================= 
+          // 1DO SLIDE DATOS PERSONALES 
+          // =========================================  -->
+    <ion-slide class = "grid-repartidox2">
+          <ion-list>                                        
+              <ion-item>
+                  <ion-label position="floating" class="mb-2">Nombre</ion-label>
+                  <ion-input name="nombre" 
+                              type="text" 
+                              formControlName="nombre"
+                              [class.is-invalid] = "campoNoValido('nombre')" ></ion-input>
+                  
+                  <small *ngIf="campoNoValido('nombre')" class="text-danger">
+                      El nombre es requerido
+                  </small>
+                  
+              </ion-item>
+              <hr>
+              <ion-item>
+                  <ion-label position="floating" class="mb-2">Apellido</ion-label>
+                  <ion-input name="apellido" 
+                              type="text" 
+                              formControlName="apellido"
+                              [class.is-invalid] = "campoNoValido('apellido')" ></ion-input>
+                  
+                  <small *ngIf="campoNoValido('apellido')" class="text-danger">
+                      El apellido es necesario
+                  </small>
+                  
+              </ion-item>
+              <hr>
+              <ion-item>
+                  <ion-label position="floating">Fecha de Nacimiento</ion-label>
+                  <ion-datetime
+                    name="fechaNac"
+                    placeholder="Nacimiento"
+                    display-format="DD MMMM YYYY"
+                    cancelText="Cancelar!!!"
+                    month-names="Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre"
+                    formControlName="fechaNac"                    
+                  >
+                  </ion-datetime>
+                </ion-item>
+          </ion-list>
+          <ion-list>
+              <ion-item>                    
+                  <ion-button (click)="siguiente()" expand="full" fill="outline" size="small">
+                      Siguiente
+                  </ion-button>
+              </ion-item>
+          </ion-list>
+
+    </ion-slide>
+    <!-- // =========================================
+         // 2DO SLIDE DATOS Y REDES SOCIALES
+         // ========================================= -->
+    <ion-slide class = "grid-repartido">    
+          <ion-list>
+              <ion-item>
+                  <ion-label position="floating">Telefono</ion-label>
+                  <ion-input name="telefono" 
+                             type="text" 
+                             formControlName="tel"
+                             [class.is-invalid] = "campoNoValido('tel')" ></ion-input>
+                  
+                  <!-- <small *ngIf="campoNoValido('tel')" class="text-danger">
+                      El telefono es necesario
+                  </small> -->
+                </ion-item>
+          </ion-list>
+          <ion-list>
+              <table class="table">
+                  <thead class="thead-mio">
+                      <tr>
+                          <th>Red</th>
+                          <th>User</th>
+                      </tr>
+                  </thead>
+                  <tbody formArrayName="redSocial">
+                      <tr *ngFor="let control of redsociales.controls; let i = index">
+                          <ng-container [formGroupName]="i">
+                              <td>
+                                  <input class="form-control"
+                                      type = "text"
+                                      formControlName = "tipo"/>  
+                              </td>
+                              <td>
+                                  <input class="form-control"
+                                      type = "text"
+                                      formControlName = "user"/>
+                              </td>
+                          </ng-container>
+                      </tr>
+                  </tbody>
+              </table>
+              
+          </ion-list>
+          <ion-list>
+              <ion-button (click)="modificar()" expand="full">
+                  Guardar
+              </ion-button>
+          
+              <ion-button (click)="atras()" expand="full" fill="outline" size="small">
+                  Atras
+              </ion-button>
+          </ion-list>
+              
+    </ion-slide> 
+  </ion-slides>
+
+
+</form>
+
+</ion-content>

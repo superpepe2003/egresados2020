@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+// UBICA TODOS LOS COLEGIOS
+
 @Component({
   selector: 'app-ubicar-todos',
   templateUrl: './ubicar-todos.component.html',

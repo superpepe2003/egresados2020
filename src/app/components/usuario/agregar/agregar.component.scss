@@ -1,0 +1,51 @@
+.content-relative {
+    position: relative;
+  }
+  
+  .boton-bottom {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+  }
+  
+  .grid-repartido {
+    display: grid;
+    height: 100%;
+    grid-template-rows: 5rem 1fr 5rem;
+    grid-template-columns: 1fr;
+    padding-bottom: 1em;
+  }
+
+  .grid-repartidox2 {
+    display: grid;
+    height: 100%;
+    grid-template-rows: 1fr 5em;
+    grid-template-columns: 1fr;
+    padding-bottom: 1em;
+  }
+
+  .grid-repartido img {
+    align-self: center;
+  }
+  
+  ion-content {
+    height: 90%;
+  }
+
+  ion-row{
+    margin-top: 0.6em;
+  }
+
+  form, ion-slides, ion-slide{
+      height: 100%;
+      width: 100%;
+  }
+
+  ion-button {
+    width: 100%;
+  }
+  
+  .thead-mio{
+    background-color: var(--ion-color-primary);
+    color: white;
+  }

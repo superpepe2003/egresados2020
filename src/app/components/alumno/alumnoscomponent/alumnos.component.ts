@@ -1,33 +1,51 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { IUsuario } from '../../../models/usuario';
-import { OAuthServiceService } from '../../../services/o-auth-service.service';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
+import { UiService } from '../../../services/ui.service';
 
 @Component({
   selector: 'app-alumnos',
   templateUrl: './alumnos.component.html',
   styleUrls: ['./alumnos.component.scss'],
 })
-export class AlumnosComponent implements OnInit {
-  
+export class AlumnosComponent implements OnInit, OnDestroy {
+
   @Input() alumnos: IUsuario[];
+  @Input() isVendedor = false;
 
-  constructor( private mAuth: OAuthServiceService) { }
+  subscribe: Subscription[] = [];
 
-  ngOnInit() {}
+  constructor( private mAuth: AuthService,
+               private ui: UiService) { }
 
-  cambiarCole( id: string ){
-    //this.mAuth.updateUsuario()
+  ngOnInit() {
+    console.log(this.alumnos);
+    console.log('Estoy');
+  }
+
+  cambiarCole( event ){
+    const usuario = event.alumno;
+    usuario.colegio = event.colegio._id;
+    this.mAuth.updateUsuario( usuario )
+            .then( user => {
+                this.alumnos = this.alumnos.filter( r => r._id !== usuario._id );
+                this.ui.presentToast('Alumno cambiado de colegio');
+            })
+            .catch( err => this.ui.mostrarError('Error', 'No se pudo cambiar de colegio'));
   }
 
   eliminar( id: string ) {
-    console.log(id);
     this.mAuth.deleteAlumno( id )
-      .subscribe( (resp: any) => {
-        console.log(resp);
-        if ( resp.ok ) {
+      .then( (resp: any) => {
           this.alumnos = this.alumnos.filter( r => r._id !== id);
-        }
-      });
+
+      })
+      .catch( err => this.ui.mostrarError('Error', 'No se pudo eliminar Alumno'));
+  }
+
+  ngOnDestroy() {
+    this.subscribe.forEach( resp => resp.unsubscribe() );
   }
 
 }

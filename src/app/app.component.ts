@@ -1,36 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { OAuthServiceService } from './services/o-auth-service.service';
-import { HttpClient } from '@angular/common/http';
-import { Storage } from '@ionic/storage';
+import { Observable } from 'rxjs';
+import { Componente } from './models/menu';
+import { AuthService } from './services/auth.service';
+import { ColesService } from './services/coles.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  componentes: Observable<Componente[]>;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private authService: OAuthServiceService
+    public authService: AuthService,
+    private cole: ColesService
   ) {
-
     this.initializeApp();
-    console.log('app');
+  }
+
+  async ngOnInit() {
+  //   await this.authService.inicial();
   }
 
   async initializeApp() {
     await this.platform.ready().then( async () => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      //para iniciar el servicio
-
-      console.log('app2');
     });
+
   }
 }

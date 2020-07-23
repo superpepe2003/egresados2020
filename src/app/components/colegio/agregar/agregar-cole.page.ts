@@ -1,11 +1,12 @@
 import { Component, OnInit, NgModule, OnDestroy, ViewChild, Input } from '@angular/core';
 import { ModalController, IonSelect } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ColegiosService } from '../../../services/colegios.service';
 import { Subscription } from 'rxjs';
 import { IColegio } from '../../../models/colegio';
-import { OAuthServiceService } from '../../../services/o-auth-service.service';
 import { IMarcador } from '../mapaubicar/mapa-ubicar.component';
+import { UiService } from '../../../services/ui.service';
+import { ColesService } from '../../../services/coles.service';
+import { AuthService } from '../../../services/auth.service';
 
 
 @Component({
@@ -37,9 +38,10 @@ export class AgregarColePage implements OnInit, OnDestroy {
   subProvincia: Subscription;
 
   constructor( public modalCtrl: ModalController,
-               public mCole: ColegiosService,
-               private mAuth: OAuthServiceService,
-               public fb: FormBuilder ) {
+               public mCole: ColesService,
+               private mAuth: AuthService,
+               public fb: FormBuilder,
+               private ui: UiService ) {
 
               }
 
@@ -90,10 +92,7 @@ export class AgregarColePage implements OnInit, OnDestroy {
       });
     } else {
       this.forma.reset({
-        temporada: '2022',
-        codigo: 'pol22310',
-        nombre: 'San Jose',
-        localidad: 'Marcos Paz'
+        temporada: '2022'
       });
     }
     //console.log(this.forma.controls);
@@ -113,12 +112,12 @@ export class AgregarColePage implements OnInit, OnDestroy {
         cole.ubicacion =  { lat: this.marcador.lat, lng: this.marcador.lng};
       }
 
-      this.subCreaCole = this.mCole.createColegio( cole )
-          .subscribe( (resp: any) => {
-            if ( resp.ok ){
-
-            }
-          });
+      this.mCole.createColegio( cole )
+            .then( (resp: any) => {
+                this.ui.mostrarInfo('Colegio', 'El Colegio se creo correctamente');
+                this.cargarForm();
+              }
+            );
 
 
     }
@@ -132,17 +131,17 @@ export class AgregarColePage implements OnInit, OnDestroy {
       this.colegio.temporada = this.forma.get('temporada').value;
       this.colegio.localidad = this.forma.get('localidad').value;
 
-      this.subCreaCole = this.mCole.updateColegio( this.colegio )
-          .subscribe( (resp: any) => {
-            console.log(resp);
-            if ( resp.ok ){
+      this.mCole.updateColegio( this.colegio )
+          .then( (resp: any) => {
+              this.ui.presentToast('Los Datos fueron modificados');
               this.modalCtrl.dismiss({
                 colegio: {...this.colegio}
               });
-            }
-          });
+            })
+          .catch( ex => this.ui.mostrarError('Error', 'El colegio no se pudo modificar') );
 
-
+    } else {
+      this.ui.mostrarError('Error', 'Hay campos con errores');
     }
   }
 

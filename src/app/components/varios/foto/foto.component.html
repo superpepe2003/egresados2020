@@ -1,0 +1,12 @@
+<ion-row *ngIf="this.mAuth.usuario">
+  <ion-col size="12" class="d-flex direction flex-column justify-content-center align-items-center">
+      <ion-avatar (click) = "cargarImage()" [class]="!isAlumno? 'avatar' : 'avatar-alumno'">
+        <img *ngIf="imagen" [src]="imagen | image">
+        <img *ngIf="!imagen" src="../../../../assets/images/NoImage.png">
+      </ion-avatar>
+      <ion-chip *ngIf="!isAlumno"
+                class="text-center">
+          <ion-label class="nick-label-class">{{ this.mAuth.usuario.apellido }}, {{ this.mAuth.usuario.nombre }} </ion-label>
+      </ion-chip>
+  </ion-col>
+</ion-row>

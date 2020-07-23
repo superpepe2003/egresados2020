@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menuPrincipal" color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Colegios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-fab vertical="bottom" horizontal = "end" slot="fixed">
+    <ion-fab-button size="small">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button data-desc="Agregar Cole" (click) = "agregarCole()">
+        <ion-icon name="add"></ion-icon>
+        <!-- <ion-label>Agregar Cole</ion-label> -->
+      </ion-fab-button>
+      <ion-fab-button data-desc="Ubicaciones" (click) = "ubicarTodos()">
+        <ion-icon name="map"></ion-icon>
+        <!-- <ion-label>Ubicaciones</ion-label> -->
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <!-- <ion-button (click)="presentAction()">
+    <i class="fas fa-plus-circle fa-2x" style="color: rgb(247, 100, 16) !important;"></i>
+  </ion-button> -->
+  
+  <ion-input [(ngModel)]="buscar"
+         [placeholder]="(this.mAuth.usuario.role==='ADMIN')?'buscar por nombre/localidad/codigovendedor':'buscar por nombre/localidad'"
+         (keyup) = "filtrar()">
+  </ion-input>
+
+  <app-colegios-lista [colegios]="colegiosFiltrados" (coleActualiza) = "cargarCole()"></app-colegios-lista>
+
+</ion-content>

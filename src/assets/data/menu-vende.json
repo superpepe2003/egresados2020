@@ -1,0 +1,12 @@
+[
+    {
+      "icon": "fas fa-file-alt",
+      "name": "Cartelera",
+      "redirectTo": "/dashboard"
+    },
+    {
+      "icon": "fas fa-school",
+      "name": "Colegios",
+      "redirectTo": "/colegios"
+    }
+]
