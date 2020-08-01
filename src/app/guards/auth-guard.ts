@@ -17,8 +17,6 @@ export class AuthGuard implements CanActivate {
   async canActivate(): Promise<boolean> {
 
     await this.oAuth.inicial();
-    console.log('estoy');
-    console.log(this.oAuth.islogeado());
 
     if ( !this.oAuth.islogeado() ) {
       this.router.navigateByUrl('login');

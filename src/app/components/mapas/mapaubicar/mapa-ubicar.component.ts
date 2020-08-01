@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IColegio } from '../../../models/colegio';
 
 export interface IMarcador{
   lat: number;
@@ -27,7 +26,8 @@ export class MapaUbicarComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   crearMarcador( event ){
     this.marcador = { lat: event.coords.lat, lng: event.coords.lng};

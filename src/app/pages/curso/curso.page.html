@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menuPrincipal" color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Cursos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-fab vertical="bottom" horizontal = "end" slot="fixed">
+    <ion-fab-button size="small">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button *ngIf="this.mAuth.usuario.role !== 'ADMIN'" data-desc="Agregar Curso" (click) = "agregarCurso()">
+        <ion-icon name="add"></ion-icon>
+        <!-- <ion-label>Agregar Cole</ion-label> -->
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <!-- <ion-button (click)="presentAction()">
+    <i class="fas fa-plus-circle fa-2x" style="color: rgb(247, 100, 16) !important;"></i>
+  </ion-button> -->
+  
+  <!-- <ion-input [(ngModel)]="buscar"
+         [placeholder]="(this.mAuth.usuario.role==='ADMIN')?'buscar por nombre/localidad/codigovendedor':'buscar por nombre/localidad'"
+         (keyup) = "filtrar()">
+  </ion-input> -->
+
+  <ion-item *ngIf="this.mAuth.usuario.role === 'ADMIN'">
+    <ion-label position="floating" class="mb-2"></ion-label>
+    <ion-select name="vendedores"
+                #cboVendedor
+                (ionChange) = "aplicaFiltro( $event )"
+                [compareWith]="compareWith" 
+                value="{{this.idVendedor}}"
+                >
+                    <ion-select-option *ngFor="let vendedor of this.mAuth.vendedores" 
+                                       [value]="vendedor._id">{{vendedor.apellido}}, {{vendedor.nombre}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <ion-label position="floating" class="mb-2">temporada</ion-label>
+          <ion-select name="temporada" style="padding: 0; margin: 0;"
+                      #temporada
+                      (ionChange) = "aplicaFiltro( $event )">
+                          <ion-select-option value="2020">2020</ion-select-option>
+                          <ion-select-option value="2021">2021</ion-select-option>
+                          <ion-select-option value="2022">2022</ion-select-option>
+                          <ion-select-option value="2023">2023</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col size="6">
+          <ion-label position="floating" class="mb-2">Localidad</ion-label>
+          <ion-input [(ngModel)]="buscar"
+                    placeholder="filtrar por localidad"
+                    (ionChange) = "filtrar( $event )">
+          </ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    </ion-item>
+
+  <ion-slides mode="ios" scrollbar="ios">
+    <ion-slide>
+      <app-cursos [cursos]="cursos | filtroCursos: buscar" (cursoActualiza) = "aplicaFiltro( $event )"></app-cursos>
+    </ion-slide>
+    <ion-slide *ngIf="this.mAuth.usuario.role === 'ADMIN'">
+      <app-resumen style="width: 100%;"></app-resumen>
+    </ion-slide>
+    <ion-slide *ngIf="this.mAuth.usuario.role === 'ADMIN'">
+      <app-grafico style="width: 100%;"></app-grafico>
+    </ion-slide>
+  </ion-slides>
+
+</ion-content>
+

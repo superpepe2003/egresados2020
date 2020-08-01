@@ -57,7 +57,7 @@ export class RegisterPage implements OnInit{
     this.forma = this.formBuilder.group({
       email: ['', [ Validators.required , Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+[.]+[a-z]{2,3}$') ]],
       password: ['', [ Validators.required, Validators.minLength(6) ]],
-      colegio: ['', Validators.required, this.mCole.colegioExiste.bind(this.mCole) ],
+      curCodigo: ['', Validators.required, this.mCole.cursoExiste.bind(this.mCole) ],
       nombre: ['', [ Validators.required ]],
       apellido: ['', [ Validators.required ]],
       tel: ['', ],
@@ -90,7 +90,7 @@ export class RegisterPage implements OnInit{
       password: '123123',
       nombre: 'pablo',
       apellido: 'Fretes',
-      colegio: 'pol14310',
+      curCodigo: 'pol14310',
       fechaNac: '14/10/2003'
     });
     //console.log(this.forma.controls);
@@ -134,13 +134,6 @@ export class RegisterPage implements OnInit{
             this.ui.mostrarError('Error', mensaje);
           });
 
-      // this.subscribeRegistro = this.mAuth.register( usuario )
-      //         .subscribe( resp => {
-      //             if ( resp.ok ) {
-      //               this.ui.mostrarInfo('Usuario', 'Usuario creado correctamente!');
-      //               this.router.navigate(['/login']);
-      //             }
-      //         });
     } else {
       this.ui.mostrarError('Error', 'Hay datos que no son validos');
     }

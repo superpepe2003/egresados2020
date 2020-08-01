@@ -1,0 +1,40 @@
+<!-- <ion-card>
+  <ion-card-title>Resumen</ion-card-title>
+  <hr> -->
+  <!-- <div class="row">
+    <div class="col-md-12"> -->
+
+      <div class="chart" style="height: 100%; width: 100%;">
+        <h2>Resumen</h2>
+        <hr>
+        <h4>Estados de Colegios</h4>
+        <canvas baseChart
+          [data]="cursosDatos"
+          [labels]="cursosDatosLabel"
+          [chartType]="doughnutChartType"
+          [colors]="pieChartColors"
+          [options]="pieChartOptions"
+          [legend]="pieChartLegend"
+          (chartHover) = "chartHovered($event)"
+          (chartClick) = "chartClicked($event)">
+        </canvas>
+
+        <h4>Cantidad de Alumnos por estados</h4>
+        <canvas baseChart
+          [data]="cursosDatosAlumnos"
+          [labels]="cursosDatosLabel"
+          [chartType]="doughnutChartType"
+          [colors]="pieChartColors"
+          [options]="pieChartOptions"
+          [legend]="pieChartLegend"
+          (chartHover) = "chartHovered($event)"
+          (chartClick) = "chartClicked($event)">
+        </canvas>
+
+
+      </div>
+
+    <!-- </div>
+  </div> -->
+
+<!-- </ion-card> -->

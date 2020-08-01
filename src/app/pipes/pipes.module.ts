@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { DomSanitizerUrlPipe } from './dom-sanitizer-url.pipe';
 import { ImpuroPipe } from './impuro.pipe';
 import { ImagePipe } from './image.pipe';
+import { PipesPipe } from './filtro-municipio.pipe';
+import { FiltroColegiosPipe } from './filtro-colegios.pipe';
+import { FiltroCursosPipe } from './filtro-cursos.pipe';
 
 
 
@@ -10,7 +13,10 @@ import { ImagePipe } from './image.pipe';
   declarations: [
     DomSanitizerUrlPipe,
     ImpuroPipe,
-    ImagePipe
+    ImagePipe,
+    PipesPipe,
+    FiltroColegiosPipe,
+    FiltroCursosPipe
   ],
   imports: [
     CommonModule
@@ -18,7 +24,10 @@ import { ImagePipe } from './image.pipe';
   exports: [
     DomSanitizerUrlPipe,
     ImpuroPipe,
-    ImagePipe
+    ImagePipe,
+    PipesPipe,
+    FiltroColegiosPipe,
+    FiltroCursosPipe
   ]
 })
 export class PipesModule { }

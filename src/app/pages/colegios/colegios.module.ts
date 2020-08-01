@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { ColegiosPageRoutingModule } from './colegios-routing.module';
 
 import { ColegiosPage } from './colegios.page';
-import { ComponentsModule } from '../../components/components.module';
+import { ColegioModule } from '../../components/colegio/colegio.module';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    PipesModule,
     FormsModule,
     IonicModule,
-    ComponentsModule,
+    ColegioModule,
     ColegiosPageRoutingModule
   ],
   declarations: [ColegiosPage]

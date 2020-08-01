@@ -1,0 +1,17 @@
+
+<ion-header class="animated fadeInLeft" color="primary">    
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click) = "salir()">
+                <i class="fas fa-backspace fa-2x" style="color: rgb(245, 245, 245);"></i>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Ubicaciones</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<!-- ---------------------------------------------------------------------------- -->
+<!-- LLAMA A APP-MAPA-UBICAR CON LA LISTA DE LOS COLEGIOS Y ISTODOS PARA Q MUESTRE TODAS LAS UBI  -->
+<!-- ---------------------------------------------------------------------------- -->
+
+<app-mapa-ubicar [colegios]="colegios" [isTodos]=true></app-mapa-ubicar>

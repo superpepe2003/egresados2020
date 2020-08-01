@@ -3,6 +3,7 @@ import { IUsuario } from '../../../models/usuario';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { UiService } from '../../../services/ui.service';
+import { ColesService } from '../../../services/coles.service';
 
 @Component({
   selector: 'app-alumnos',
@@ -17,6 +18,7 @@ export class AlumnosComponent implements OnInit, OnDestroy {
   subscribe: Subscription[] = [];
 
   constructor( private mAuth: AuthService,
+               private mCole: ColesService,
                private ui: UiService) { }
 
   ngOnInit() {
@@ -24,11 +26,19 @@ export class AlumnosComponent implements OnInit, OnDestroy {
     console.log('Estoy');
   }
 
-  cambiarCole( event ){
+  cambiarCurso( event ){
     const usuario = event.alumno;
-    usuario.colegio = event.colegio._id;
-    this.mAuth.updateUsuario( usuario )
-            .then( user => {
+    const codigo = event.codigo;
+    const codigoViejo = usuario.curCodigo;
+    usuario.curCodigo = codigo;
+    console.log(usuario);
+    console.log(codigo);
+    console.log(codigoViejo);
+
+    this.mAuth.updateAlumno( usuario )
+            .then( () => {
+                this.mCole.updateIncrementaCurso(codigoViejo, false);
+                this.mCole.updateIncrementaCurso(event.codigo, true);
                 this.alumnos = this.alumnos.filter( r => r._id !== usuario._id );
                 this.ui.presentToast('Alumno cambiado de colegio');
             })

@@ -20,7 +20,7 @@
     </ion-fab-list>
   </ion-fab>
 
-  <app-alumnos [alumnos] = "this.vendedores | async" [isVendedor]="true"></app-alumnos>
+  <app-alumnos [alumnos] = "this.mAuth.vendedores" [isVendedor]="true"></app-alumnos>
 
 
 </ion-content>

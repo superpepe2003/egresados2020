@@ -12,7 +12,7 @@ export interface IUsuario {
     apellido: string;
     fechaNac: Date;
     tel: string;
-    colegio: string;
+    curCodigo: string;
     redSocial: {
         tipo: string,
         user: string

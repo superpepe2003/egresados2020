@@ -3,7 +3,6 @@ import { ModalController, IonSelect } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { IColegio } from '../../../models/colegio';
-import { IMarcador } from '../mapaubicar/mapa-ubicar.component';
 import { UiService } from '../../../services/ui.service';
 import { ColesService } from '../../../services/coles.service';
 import { AuthService } from '../../../services/auth.service';
@@ -18,24 +17,21 @@ export class AgregarColePage implements OnInit, OnDestroy {
 
   @Input() colegio: IColegio;
   @Input() isModificar;
+  
 
 
   forma: FormGroup;
 
   @ViewChild('provincia', { static: true}) cboProvi: IonSelect;
 
+  municipios: any[] = [];
   provincia = "Buenos Aires";
   provincias: any;
+  muniFiltro = '';
+  buscaMuni = false;
 
-  marcador: IMarcador;
 
-  ubicacion: IMarcador = {
-    lat: -34.603722,
-    lng: -58.381592 };
-
-  subLocalidad: Subscription;
-  subCreaCole: Subscription;
-  subProvincia: Subscription;
+  suscribir: Subscription[] = [];
 
   constructor( public modalCtrl: ModalController,
                public mCole: ColesService,
@@ -53,12 +49,54 @@ export class AgregarColePage implements OnInit, OnDestroy {
       this.crearFormulario();
       this.cargarForm();
     }
-    this.subProvincia = this.mCole.getProvincias().subscribe( resp => {
-      this.provincias = resp;
-      this.cboProvi.value = 'Buenos Aires';
-    });
+    this.suscribir.push( this.mCole.getProvincias().subscribe( resp => {
+        this.provincias = resp;
+        this.cboProvi.value = 'Buenos Aires';
+      })
+    );
 
   }
+
+  // =========================================
+  // BUSCA LA LOCALIDAD POR LA PROVINCIA ELEGIDA
+  // =========================================
+  buscar( e ) {
+    this.muniFiltro = e.detail.value;
+    console.log(this.muniFiltro);
+    if ( this.muniFiltro.length > 0){
+      this.buscaMuni = true;
+    } else {
+      this.buscaMuni = false;
+    }
+  }
+
+  elijeMuni( item ){
+    console.log(item.nombre);
+    this.forma.controls['localidad'].setValue( item.nombre );
+    this.buscaMuni = false;
+  }
+
+  cierraBlur() {
+    setTimeout(() => {
+      this.buscaMuni = false;
+    }, 50);
+  }
+
+  cambioProvincia( e ){
+    this.cargarMunicipios(e.detail.value);
+  }
+
+  cargarMunicipios( provi: string ){
+    this.suscribir.push(
+      this.mCole.getMunicipio( provi )
+          .subscribe( resp => {
+            this.municipios = resp;
+          }));
+  }
+
+  // =========================================
+  // FORMULARIOS
+  // =========================================
 
   campoNoValido( campo ){
     return this.forma.get(campo).invalid && this.forma.get(campo).touched;
@@ -66,19 +104,24 @@ export class AgregarColePage implements OnInit, OnDestroy {
 
   crearFormulario() {
     this.forma = this.fb.group({
-      codigo:    ['', [ Validators.required ], !this.mCole.colegioExiste.bind(this.mCole)],
-      nombre:    ['', [ Validators.required, Validators.minLength(6) ]],
-      temporada: ['2022', Validators.required ],
-      localidad: ['', [ Validators.required ]]
+      nombre:    ['', [ Validators.required ]],
+      tipo: ['privado', Validators.required ],
+      localidad: ['', [ Validators.required ]],
+      provincia: ['', [Validators.required]]
+    }, {
+      validators: this.validarColegio('nombre', 'localidad', 'provincia')
     });
 
   }
 
   crearFormularioModificar() {
     this.forma = this.fb.group({
-      nombre:    ['', [ Validators.required, Validators.minLength(6) ]],
-      temporada: ['2022', Validators.required ],
-      localidad: ['', [ Validators.required ]]
+      nombre:    ['', [ Validators.required ]],
+      tipo: ['privado', Validators.required ],
+      localidad: ['', [ Validators.required ]],
+      provincia: ['', [Validators.required]]
+    }, {
+      validators: this.validarColegio('nombre', 'localidad', 'provincia')
     });
 
   }
@@ -86,31 +129,36 @@ export class AgregarColePage implements OnInit, OnDestroy {
   cargarForm() {
     if ( this.isModificar ){
       this.forma.reset({
-        temporada: this.colegio.temporada,
+        tipo: this.colegio.tipo,
         nombre: this.colegio.nombre,
-        localidad: this.colegio.localidad
+        localidad: this.colegio.localidad,
+        provincia: this.colegio.provincia
       });
+      this.cargarMunicipios(this.colegio.provincia);
     } else {
       this.forma.reset({
-        temporada: '2022'
+        nombre: '',
+        localidad: '',
+        provincia: 'Buenos Aires',
+        tipo: 'privado'
       });
+      this.cargarMunicipios('Buenos Aires');
     }
-    //console.log(this.forma.controls);
   }
 
+  // =========================================
+  // GUARDAR
+  // =========================================
+
   onColegio() {
-
     if ( this.forma.valid ) {
-
       let cole: IColegio;
 
       cole = this.forma.value;
 
       cole.creadopor = this.mAuth.usuario._id;
-      cole.estado = 'iniciado';
-      if ( this.marcador ){
-        cole.ubicacion =  { lat: this.marcador.lat, lng: this.marcador.lng};
-      }
+      cole.nombreLargo = cole.nombre.toLowerCase() + '-'
+                          + cole.localidad.toLowerCase() + '-' + cole.provincia.toLowerCase();
 
       this.mCole.createColegio( cole )
             .then( (resp: any) => {
@@ -120,19 +168,31 @@ export class AgregarColePage implements OnInit, OnDestroy {
             );
 
 
+    } else {
+      let mensaje = 'Hay datos no validos';
+      this.ui.mostrarError('Error', mensaje);
     }
 
   }
 
   onColegioModificar() {
+
     if ( this.forma.valid ) {
 
-      this.colegio.nombre = this.forma.get('nombre').value;
-      this.colegio.temporada = this.forma.get('temporada').value;
-      this.colegio.localidad = this.forma.get('localidad').value;
+      let cole: IColegio;
+
+      cole = this.forma.value;
+
+      this.colegio.nombre = cole.nombre;
+      this.colegio.tipo = cole.tipo;
+      this.colegio.localidad = cole.localidad;
+      this.colegio.provincia = cole.provincia;
+      this.colegio.nombreLargo = cole.nombre.toLowerCase() + '-'
+                          + cole.localidad.toLowerCase() + '-' + cole.provincia.toLowerCase();
 
       this.mCole.updateColegio( this.colegio )
-          .then( (resp: any) => {
+          .then( async (resp: any) => {
+              await this.mCole.updateCursos(this.colegio);
               this.ui.presentToast('Los Datos fueron modificados');
               this.modalCtrl.dismiss({
                 colegio: {...this.colegio}
@@ -145,38 +205,35 @@ export class AgregarColePage implements OnInit, OnDestroy {
     }
   }
 
-  merror() {
+  validarColegio(n: string, l: string, p: string) {
+    return ( formgroup: FormGroup) => {
+      const nombre = formgroup.controls[n].value;
+      const localidad = formgroup.controls[l].value;
+      const provincia = formgroup.controls[p].value;
 
-  }
+      if ( this.isModificar ) {
+        if ( nombre === this.colegio.nombre && localidad === this.colegio.localidad
+             && provincia === this.colegio.provincia){
+          formgroup.controls[n].setErrors( null );
+          return;
+        }
+      }
 
-  UbicaLocalidad( ) {
-    if (!this.isModificar){
-      this.subLocalidad = this.mCole.ubicaLocalidad( this.forma.get('localidad').value )
-              .subscribe( resp => {
-                if ( resp ){
-                   this.ubicacion = { lat: resp.lat, lng: resp.lon };
-                }
-              });
-    }
+      const res = this.mCole.colegios.filter( resp =>
+                        resp.localidad.toLowerCase() === localidad.toLowerCase() &&
+                        resp.nombre.toLowerCase() === nombre.toLowerCase() &&
+                        resp.provincia.toLowerCase() === provincia.toLowerCase());
 
-  }
-
-
-  //Evento que devuelve el componente de ubicar mapa
-  ubicado( event ){
-    this.marcador = { lat: event.lat, lng: event.lng };
+      if ( res.length > 0 ){
+              formgroup.controls[n].setErrors( { Existe: true } );
+            } else {
+              formgroup.controls[n].setErrors( null );
+            }
+    };
   }
 
   ngOnDestroy() {
-    if ( this.subLocalidad ){
-      this.subLocalidad.unsubscribe();
-    }
-    if ( this.subProvincia ){
-      this.subProvincia.unsubscribe();
-    }
-    if ( this.subCreaCole ) {
-      this.subCreaCole.unsubscribe();
-    }
+    this.suscribir.forEach(resp => resp.unsubscribe());
   }
 
   salir(){

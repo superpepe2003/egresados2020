@@ -11,6 +11,7 @@ import { Storage } from '@ionic/storage';
 import { first, finalize, tap } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { ColesService } from './coles.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,8 @@ export class AuthService implements OnDestroy{
   authState = new BehaviorSubject(false);
 
   usuario = {} as IUsuario;
+  vendedores: IUsuario[] = [];
+
   menu: Observable<Componente[]>;
 
   uploadPercent: Observable<number>;
@@ -35,9 +38,9 @@ export class AuthService implements OnDestroy{
                private mAuth: AngularFireAuth,
                private db: AngularFireDatabase,
                private http: HttpClient,
-               private mStorage: AngularFireStorage) {
+               private mStorage: AngularFireStorage,
+               private mCole: ColesService) {
 
-                //this.leerUserStorage();
   }
 
   async inicial(){
@@ -83,6 +86,10 @@ export class AuthService implements OnDestroy{
                 this.usuario._id = resp.user.uid;
                 usuario._id = resp.user.uid;
                 const us = await this.crearPerfil( usuario );
+                console.log(usuario);
+                if ( usuario.curCodigo ){
+                  this.mCole.updateIncrementaCurso(usuario.curCodigo, true);
+                }
                 resolve( us );
             })
             .catch( err => {
@@ -105,6 +112,10 @@ export class AuthService implements OnDestroy{
 
   updateUsuario(usuario: IUsuario) {
     return this.db.database.ref('users/' + this.usuario._id).update(usuario);
+  }
+
+  updateAlumno(usuario: IUsuario) {
+    return this.db.database.ref('users/' + usuario._id).update(usuario);
   }
 
   subirFoto( datos: any) {
@@ -143,6 +154,12 @@ export class AuthService implements OnDestroy{
 
   }
 
+  getAlumnos( codigo ) {
+    return this.db.list<IUsuario>('users/', ref => ref.orderByChild('curCodigo').equalTo( codigo ))
+              .valueChanges()
+              .pipe( first());
+  }
+
   grabarUser(){
 
     this.storage.set('egresadosUser', this.usuario._id);
@@ -160,7 +177,6 @@ export class AuthService implements OnDestroy{
 
   async getMenuOpts() {
     let uri = '';
-    console.log(this.usuario.role);
     switch ( this.usuario.role ){
         case 'ADMIN':
           uri = '/assets/data/menu-admin.json';
@@ -172,7 +188,7 @@ export class AuthService implements OnDestroy{
           uri = '/assets/data/menu.json';
           break;
     }
-    this.menu =  this.http.get<Componente[]>(uri).pipe( tap (console.log ));
+    this.menu =  this.http.get<Componente[]>(uri);
   }
 
 

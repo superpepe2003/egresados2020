@@ -67,6 +67,7 @@ export class ModificarPerfilComponent implements OnInit, OnDestroy {
   }
 
   cargarForm() {
+    console.log(this.mAuth.usuario);
     this.forma.reset({
       nombre: this.mAuth.usuario.nombre,
       apellido: this.mAuth.usuario.apellido,
@@ -106,6 +107,7 @@ export class ModificarPerfilComponent implements OnInit, OnDestroy {
   }
 
   siguiente() {
+    console.log(this.slides);
     this.slides.lockSwipes(false);
     this.slides.slideNext();
     this.slides.lockSwipes(true);

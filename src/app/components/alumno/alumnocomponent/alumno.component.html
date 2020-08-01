@@ -1,7 +1,60 @@
 <ion-card class="cardx">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="7">
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col size="12" class="d-flex flex-direction-row align-items-center"> 
+              <ion-label class="txtAlumno">{{ alumno.apellido }}, {{ alumno.nombre }}</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <i class="fas fa-at" style="margin-right: 0.5em;"></i>
+              {{alumno.email}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+             <i class="fas fa-birthday-cake" style="color: red; margin-right: 0.5em;"></i>
+             <ion-label>{{ alumno.fechaNac | date: 'dd/MM/yyyy' }}</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngFor="let red of alumno.redSocial">
+            <ion-col *ngIf="red.tipo && red.user" size="1" [ngSwitch] = "red.tipo.toLowerCase()">
+              <i *ngSwitchCase="'facebook'" class="fab fa-facebook"></i>
+              <i *ngSwitchCase="'instagram'" class="fab fa-instagram"></i>
+              <i *ngSwitchCase="'tiktok'" class="fab fa-tiktok"></i>
+              <i *ngSwitchCase="'twitter'" class="fab fa-twitter"></i>
+              <i *ngSwitchDefault class="fas fa-project-diagram"></i>
+            </ion-col>
+            <ion-col *ngIf="red.tipo && red.user" size="9">
+              {{ red.user }}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <ion-col size="5">
+        <app-foto [imagen]="alumno.img" [isAlumno]="true"></app-foto>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!isVendedor">
+      <ion-col size="6">
+        <ion-button (click)="onCambiarCole()" expand="block" fill="clear" shape="round">
+          Cambiar de cole
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
 
-  <!-- <ion-card-header class="colorTitulo" color="colorTitulo"> -->
-    <ion-grid fixed style="margin-bottom: 0px !important;">
+          <ion-button (click)="onEliminar()" expand="block" fill="clear" shape="round">
+            eliminar
+          </ion-button>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+    <!-- <ion-grid fixed style="margin-bottom: 0px !important;">
       <ion-row>
         <ion-col size="3" class="d-flex flex-direction-column justify-content-center pt-2">
           <app-foto [imagen]="alumno.img" [isAlumno]="true"></app-foto>
@@ -11,9 +64,6 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-
-   
-  <!-- </ion-card-header> -->
 
   <ion-grid fixed style="margin-top: 0px !important;">
     <ion-row>
@@ -47,9 +97,6 @@
         </ion-button>
       </ion-col>
       <ion-col size="6">
-          <!-- <ion-button (click)="onMenu( $event, colegio )" color="light" shape="round" class="float-right">
-          ...
-          </ion-button> -->
 
           <ion-button (click)="onEliminar()" expand="block" fill="clear" shape="round">
             eliminar
@@ -57,7 +104,7 @@
 
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
 
   
 

@@ -12,17 +12,19 @@ import { AgregarComponent } from '../../components/usuario/agregar/agregar.compo
 })
 export class AdminPage implements OnInit, OnDestroy {
 
-  vendedores: Observable<IUsuario[]>;
+  //vendedores: Observable<IUsuario[]>;
 
-  constructor( private mAuth: AuthService,
+  constructor( public mAuth: AuthService,
                private modal: ModalController) { }
 
   ngOnInit() {
     this.cargarVendedores();
   }
 
-  cargarVendedores(){
-    this.vendedores = this.mAuth.getVendedores();
+  async cargarVendedores(){
+    if ( this.mAuth.vendedores.length === 0) {
+      this.mAuth.vendedores = await this.mAuth.getVendedores().toPromise();
+    }
   }
 
   async agregarVendedor() {
@@ -33,8 +35,8 @@ export class AdminPage implements OnInit, OnDestroy {
       agregaVende.present();
 
       const { data } = await agregaVende.onDidDismiss();
-      if ( data.ok ){
-        this.cargarVendedores();
+      if ( data.vendedores ){
+        data.vendedores.forEach( resp => this.mAuth.vendedores.push( {...resp } ));
       }
 
   }

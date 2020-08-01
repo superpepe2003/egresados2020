@@ -1,0 +1,32 @@
+<ion-card class="cardx">
+
+  <ion-card-header class="colorTitulo">
+    <ion-card-title color="light" style="text-align: left;">{{curso.nombre}}</ion-card-title>
+    <ion-card-subtitle color="light" style="text-align: left;">{{curso.colegio}} - {{ curso.localidad }} </ion-card-subtitle>
+    <ion-chip color="primary" mode="ios" outline="true">
+      <ion-label>{{ curso.codigo }}</ion-label>
+    </ion-chip>
+    
+  </ion-card-header>
+
+  <ion-grid fixed style="height: 3rem;">
+    <ion-row >
+      <ion-col size="2" style="text-align: left;">
+          <i class="fas fa-heart fa-1x" style="color: red; margin-right: 0.5em;"></i>
+          <ion-label>{{ curso.cant }}</ion-label>
+      </ion-col>
+      <ion-col size="8" (click)="cambiarEstado()">
+          <ion-label>{{estadosPosibles[curso.estado]}}</ion-label>
+      </ion-col>
+      <ion-col size="2" style="text-align: right;" class="rota90grados">
+          <ion-button (click)="onMenu( $event, curso )" 
+                      fill="clear" 
+                      shape="round" 
+                      class="float-right">
+          ...
+          </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-card>

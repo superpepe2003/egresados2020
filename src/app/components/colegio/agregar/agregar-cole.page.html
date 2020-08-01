@@ -10,89 +10,72 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="animated fadeInLeft">
+<ion-content class="animated fadeInLeft"  >
 
-    <form (ngSubmit)="onColegio()" [formGroup]="forma" autocomplete="false" class="item-grid">
-
+    <form [formGroup]="forma" autocomplete="false" class="item-grid">
         <ion-list>
-            <ion-item *ngIf="!isModificar">
-                <ion-label position="floating" class="mb-2">Codigo</ion-label>
-                <ion-input name="codigo" 
-                            type="text"
-                            formControlName="codigo"
-                            [class.is-invalid] = "campoNoValido('codigo')" 
-                            (keyup.enter) = "merror()"></ion-input>
+            <ion-item>
+                <ion-label position="floating" class="mb-2">Provincia</ion-label>
+                <ion-select placeholder="Selecccione Provincia" formControlName="provincia"
+                            #provincia
+                            (ionChange) = "cambioProvincia($event)"
+                            >
+                                <ion-select-option [value]="item" *ngFor="let item of provincias">{{ item }}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
 
-                <!-- <ion-spinner *ngIf="colegio.pending" name="bubbles"></ion-spinner> -->
-                <small *ngIf="campoNoValido('codigo')" class="text-danger">
-                    El codigo no es valido
+                <ion-label position="floating" class="mb-2">Localidad</ion-label>
+                
+                <ion-input
+                            name="localidad"
+                            type="text"
+                            #localidad
+                            formControlName="localidad"
+                            [class.is-invalid] = "campoNoValido('localidad')" 
+                            (ionChange) = "buscar( $event )"
+                            (ionBlur) = "cierraBlur()">
+                    
+                </ion-input>
+                <small *ngIf="campoNoValido('localidad')" class="text-danger">
+                    El localidad no es valido
                 </small>
+                   
+            </ion-item>  
+            <ion-item class="autocomplete" 
+                      *ngIf="this.buscaMuni && (municipios | filtroMunicipio: muniFiltro).length > 0">
+                <ion-content scrollY="true" style="height: 15rem" class="ilistComunas">
+                    <ion-list >
+                        <ion-item *ngFor="let item of municipios | filtroMunicipio: muniFiltro"
+                                  (click) = "elijeMuni( item )">
+                            <ion-label>{{ item.nombre }}</ion-label>
+                        </ion-item>
+                    </ion-list>
+                </ion-content>            
             </ion-item>
             <ion-item>
                 <ion-label position="floating" class="mb-2">Nombre</ion-label>
                 <ion-input name="nombre" 
                             type="text"
                             formControlName="nombre"
-                            [class.is-invalid] = "campoNoValido('nombre')" 
-                            (keyup.enter) = "merror()"></ion-input>
+                            [class.is-invalid] = "campoNoValido('nombre')" ></ion-input>
 
                 <!-- <ion-spinner *ngIf="colegio.pending" name="bubbles"></ion-spinner> -->
                 <small *ngIf="campoNoValido('nombre')" class="text-danger">
-                    El nombre no es valido
+                    El nombre no es valido o el colegio ya existe en esa localidad
                 </small>
             </ion-item>
             <ion-item>
-                <ion-label position="floating" class="mb-2">temporada</ion-label>
-                <ion-select name="temporada"
-                            formControlName="temporada"
+                <ion-label position="floating" class="mb-2">tipo</ion-label>
+                <ion-select name="tipo"
+                            formControlName="tipo"
                             placeholder="Select One">
-                                <ion-select-option value="2021">2021</ion-select-option>
-                                <ion-select-option value="2022">2022</ion-select-option>
-                                <ion-select-option value="2023">2023</ion-select-option>
+                                <ion-select-option value="privado">Privado</ion-select-option>
+                                <ion-select-option value="estatal">Estatal</ion-select-option>
                 </ion-select>
 
             </ion-item>
-            <ion-item>
-                <ion-label position="floating" class="mb-2">Provincia</ion-label>
-                <ion-select placeholder="Selecccione Provincia"
-                            #provincia
-                            >
-                                <ion-select-option [value]="item" *ngFor="let item of provincias">{{ item }}</ion-select-option>
-                </ion-select>
-            </ion-item>
-            <ion-item>
-                <ion-grid fixed>
-                    <ion-row>
-                        <ion-col size="10">
-                            <ion-label position="floating" class="mb-2">Localidad</ion-label>
-                            <ion-input name="localidad" 
-                                        type="text"
-                                        formControlName="localidad"
-                                        [class.is-invalid] = "campoNoValido('localidad')" 
-                                        (keyup.enter) = "UbicaLocalidad()"></ion-input>
-                            <small *ngIf="campoNoValido('localidad')" class="text-danger">
-                                El localidad no es valido
-                            </small>
-                        </ion-col>
-                        <ion-col size="2" class="text-center">
-                            <ion-button (click)="UbicaLocalidad()" 
-                                        expand="block" 
-                                        fill="clear" 
-                                        shape="round"
-                                        style="position: absolute; bottom: 1rem;">
-                                <i class="fas fa-location-arrow fa-2x"></i>
-                              </ion-button>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-                
-
-                
-                
-            </ion-item>           
-        </ion-list>
-        <ion-list *ngIf="!isModificar">
-              <app-mapa-ubicar [ubicacion] = "ubicacion" (ubicado)="ubicado($event)"></app-mapa-ubicar>
+                     
         </ion-list>
         <ion-list>
             <ion-button *ngIf="!isModificar" (click)="onColegio()" expand="block" fill="clear" shape="round">

@@ -1,0 +1,43 @@
+<!-- <ion-card>
+  <ion-card-title>Resumen</ion-card-title> -->
+  <h2>Resumen</h2>
+  <hr>
+  <ion-list *ngIf="this.cursos">
+    <ion-item>
+      <ion-label>Total: {{ cursos.length}} cursos</ion-label>
+    </ion-item>
+    <hr>
+
+    <table class="table" *ngIf="estados">
+      <thead>
+        <tr>
+          <th scope="col">Estados</th>
+          <th scope="col">Cant</th>
+          <th scope="col">Alumnos</th>
+        </tr>
+      </thead>
+      <tbody>        
+        <tr *ngFor="let item of estados; index as i">
+          <ng-container *ngIf="item.cant > 0">
+            <ng-container  [ngSwitch]="i">
+              <th scope="row" *ngSwitchCase="0">Cargados</th>
+              <th scope="row" *ngSwitchCase="1">Iniciados</th>
+              <th scope="row" *ngSwitchCase="2">R. Chicos</th>
+              <th scope="row" *ngSwitchCase="3">R. Padres</th>
+              <th scope="row" *ngSwitchCase="4">Definicion</th>
+              <th scope="row" *ngSwitchCase="5">Cerrados</th>
+            </ng-container >
+            <td>{{item.cant}}</td>
+            <td>{{item.alumnos}}</td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr>
+    <ion-item>
+      <ion-label>Total Alumnos: {{ total }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+<!-- </ion-card> -->

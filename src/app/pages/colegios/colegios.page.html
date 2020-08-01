@@ -14,7 +14,7 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button data-desc="Agregar Cole" (click) = "agregarCole()">
+      <ion-fab-button *ngIf="this.mAuth.usuario.role !== 'ADMIN'" data-desc="Agregar Cole" (click) = "agregarCole()">
         <ion-icon name="add"></ion-icon>
         <!-- <ion-label>Agregar Cole</ion-label> -->
       </ion-fab-button>
@@ -31,9 +31,10 @@
   
   <ion-input [(ngModel)]="buscar"
          [placeholder]="(this.mAuth.usuario.role==='ADMIN')?'buscar por nombre/localidad/codigovendedor':'buscar por nombre/localidad'"
-         (keyup) = "filtrar()">
+         (ionChange) = "filtrar( $event )">
   </ion-input>
 
-  <app-colegios-lista [colegios]="colegiosFiltrados" (coleActualiza) = "cargarCole()"></app-colegios-lista>
+  <app-colegios-lista [colegios]="this.mCole.colegios | filtroColegios: aplicarFiltro " 
+                      (coleActualiza) = "cargarCole()"></app-colegios-lista>
 
 </ion-content>

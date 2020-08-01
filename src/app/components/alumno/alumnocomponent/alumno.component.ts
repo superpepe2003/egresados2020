@@ -13,7 +13,7 @@ export class AlumnoComponent implements OnInit, OnDestroy {
 
   @Input() alumno: IUsuario;
   @Input() isVendedor;
-  @Output() cambiarCole = new EventEmitter();
+  @Output() cambiarCurso = new EventEmitter();
   @Output() eliminar = new EventEmitter();
 
   subCole: Subscription;
@@ -46,7 +46,7 @@ export class AlumnoComponent implements OnInit, OnDestroy {
         }, {
           text: 'OK',
           handler: ( data ) => {
-            this.updateCole( data.txtCodigo );
+            this.updateCurso( data.txtCodigo );
           }
         }
       ]
@@ -57,12 +57,11 @@ export class AlumnoComponent implements OnInit, OnDestroy {
 
   }
 
-  updateCole( cod: string ) {
-    this.subCole = this.mCol.colegioExisteCod( cod )
+  updateCurso( cod: string ) {
+    this.subCole = this.mCol.cursoExisteCod( cod )
               .subscribe(( resp: any ) => {
-                  console.log(resp);
-                  if ( resp.ok ){
-                    this.cambiarCole.emit( {alumno: this.alumno, codigo: cod, colegio: resp.colegio } );
+                  if ( resp ){
+                    this.cambiarCurso.emit( {alumno: this.alumno, codigo: cod, curso: resp.curso } );
                   }
               });
   }

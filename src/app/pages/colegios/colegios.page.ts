@@ -3,12 +3,9 @@ import { IColegio } from '../../models/colegio';
 import { Subscription } from 'rxjs';
 import { ModalController, ActionSheetController } from '@ionic/angular';
 import { AgregarColePage } from '../../components/colegio/agregar/agregar-cole.page';
-import { RouteConfigLoadEnd } from '@angular/router';
-import { UbicarTodosComponent } from '../../components/colegio/ubicar-todos/ubicar-todos.component';
-import { ColegiosPageModule } from './colegios.module';
 import { ColesService } from '../../services/coles.service';
-import { auth } from 'firebase';
 import { AuthService } from '../../services/auth.service';
+import { UbicarTodosComponent } from '../../components/mapas/ubicar-todos/ubicar-todos.component';
 
 @Component({
   selector: 'app-colegios',
@@ -21,10 +18,12 @@ export class ColegiosPage implements OnDestroy {
   colegiosFiltrados: IColegio[];
   subColes: Subscription;
 
+  aplicarFiltro = '';
+
   buscar = '';
 
-  constructor( private mCole: ColesService,
-               private mAuth: AuthService,
+  constructor( public mCole: ColesService,
+               public mAuth: AuthService,
                private modalCtrl: ModalController,
                public actionSheetController: ActionSheetController) {
 
@@ -38,23 +37,9 @@ export class ColegiosPage implements OnDestroy {
   cargarCole(){
     // this.mCole.getColegiosVendedorPruebas( this.mAuth.usuario._id );
     if ( this.mAuth.usuario.role === 'ADMIN' ){
-      this.subColes = this.mCole.getColegios()
-                        .subscribe(
-                          (resp) => {
-                            this.colegios = resp;
-                            this.filtrar();
-                            },
-                          (err) => console.log( err ),
-                          () => {}
-                        );
+      this.mCole.getColegios();
     } else {
-      this.subColes = this.mCole.getColegiosVendedor( this.mAuth.usuario._id )
-                      .subscribe(
-                        (resp) => {
-                          this.colegios = resp;
-                          this.filtrar();
-                        },
-                        (err) => console.log(err));
+      this.mCole.getColegiosVendedor( this.mAuth.usuario._id );
     }
   }
 
@@ -64,17 +49,13 @@ export class ColegiosPage implements OnDestroy {
       component: AgregarColePage
     });
 
-    // agregaModal.onDidDismiss().then((data: any) => {
-    //   if ( data.data.ok ) {
-    //     this.cargarCole();
-    //   }
-    // });
-
     await agregaModal.present();
 
     const { data } = await agregaModal.onDidDismiss();
-    if ( data.ok ){
-      this.cargarCole();
+    if ( data ){
+      if ( data.ok ){
+        this.cargarCole();
+      }
     }
 
   }
@@ -91,33 +72,9 @@ export class ColegiosPage implements OnDestroy {
 
   }
 
-  filtrar() {
-    this.colegiosFiltrados = [...this.colegios];
-    let temporalNombre = [];
-    const busca = this.buscar.toLowerCase();
-    if(this.mAuth.usuario.role === 'ADMIN'){
+  filtrar( e ) {
 
-      temporalNombre = this.colegiosFiltrados.filter( resp => {
-        if ( resp.nombre.toLowerCase().includes(this.buscar) ||
-             resp.localidad.toLowerCase().includes(this.buscar) ||
-             resp.codigo.toLowerCase().includes(this.buscar)){
-
-              return resp;
-        }
-      });
-
-    } else {
-
-      temporalNombre = this.colegiosFiltrados.filter( resp => {
-        if ( resp.nombre.toLowerCase().includes(this.buscar) ||
-            resp.localidad.toLowerCase().includes(this.buscar)){
-
-              return resp;
-        }
-      });
-
-    }
-    this.colegiosFiltrados = [...temporalNombre];
+    this.aplicarFiltro = e.detail.value;
 
   }
 

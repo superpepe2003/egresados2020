@@ -11,6 +11,11 @@
     },
     {
       "icon": "fas fa-users",
+      "name": "Cursos",
+      "redirectTo": "/cursos"
+    },
+    {
+      "icon": "fas fa-users",
       "name": "Vendedores",
       "redirectTo": "/admin"
     }

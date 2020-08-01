@@ -3,7 +3,7 @@ import { IColegio } from '../../../models/colegio';
 import { ColegioPopoverComponent } from '../colegio-popover/colegio-popover.component';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { ListarComponent } from '../../alumno/listar/listar.component';
-import { UbicarComponent } from '../ubicar/ubicar.component';
+import { UbicarComponent } from '../../mapas/ubicar/ubicar.component';
 import { AgregarColePage } from '../agregar/agregar-cole.page';
 
 @Component({
@@ -52,27 +52,27 @@ export class ColegioComponent implements OnInit {
       case 2:
         this.ejecutarUbicar( cole );
         break;
-      case 3:
-        this.ejecutarLista( cole );
-        break;
+      // case 3:
+      //   this.ejecutarLista( cole );
+      //   break;
     }
   }
 
-  async ejecutarLista( cole: IColegio){
-      const modalLista = await this.modal.create({
-        component: ListarComponent,
-        componentProps: {
-          alumnos: cole.alumnos,
-          titulo: `${cole.nombre} - ${cole.localidad}`
-        }
-      });
+  // async ejecutarLista( cole: IColegio){
+  //     const modalLista = await this.modal.create({
+  //       component: ListarComponent,
+  //       componentProps: {
+  //         alumnos: cole.alumnos,
+  //         titulo: `${cole.nombre} - ${cole.localidad}`
+  //       }
+  //     });
 
-      modalLista.present();
+  //     modalLista.present();
 
-      await modalLista.onDidDismiss();
+  //     await modalLista.onDidDismiss();
 
-      this.coleActualiza.emit({ ok: true });
-  }
+  //     this.coleActualiza.emit({ ok: true });
+  // }
 
 
   async ejecutarUbicar( cole: IColegio){
@@ -87,8 +87,10 @@ export class ColegioComponent implements OnInit {
 
       const { data } = await modalLista.onDidDismiss();
 
-      if (data.colegio.ubicacion) {
-        this.cargaMapa( data.colegio.ubicacion.lat, data.colegio.ubicacion.lng);
+      if ( data ){
+        if (data.colegio.ubicacion) {
+          this.cargaMapa( data.colegio.ubicacion.lat, data.colegio.ubicacion.lng);
+        }
       }
   }
 
@@ -105,9 +107,10 @@ export class ColegioComponent implements OnInit {
 
     const { data } = await modalLista.onDidDismiss();
 
-    if ( data.colegio ){
-      this.colegio = {...data.colegio};
-      console.log(this.colegio);
+    if ( data ) {
+      if ( data.colegio ){
+        this.colegio = {...data.colegio};
+      }
     }
 }
 

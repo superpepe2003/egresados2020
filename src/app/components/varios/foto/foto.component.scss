@@ -13,10 +13,12 @@
 
 .avatar-alumno {
     position: relative !important;
-    height: 3rem !important;
-    width: 3rem !important;
+    //height: 3rem !important;
+    height: 8rem !important;
+    width: 8rem !important;
     text-align: center !important;
     --border-radius: 1.5rem !important;
+    overflow: visible;
   
     -webkit-box-shadow: 0px 0px 14px 4px rgba(0,0,0,0.4);
     -moz-box-shadow: 0px 0px 14px 4px rgba(0,0,0,0.4);

@@ -15,7 +15,6 @@ export class ListarComponent implements OnInit {
   constructor( private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    
   }
 
   salir(){

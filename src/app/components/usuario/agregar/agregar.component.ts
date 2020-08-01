@@ -16,6 +16,8 @@ export class AgregarComponent implements OnInit {
 
   forma: FormGroup;
 
+  vendedores: IUsuario[] = [];
+
   slideOptions = {
     allowSlidePrev: false,
     allowSlideNext: false
@@ -110,6 +112,7 @@ export class AgregarComponent implements OnInit {
       this.mAuth.register( usuario )
           .then( resp => {
             this.ui.mostrarInfo('Usuario Creado', 'Usuario creado correctamente!!!');
+            this.vendedores.push( usuario );
             this.cargarForm();
             this.atras();
           })
@@ -135,7 +138,7 @@ export class AgregarComponent implements OnInit {
 
   salir() {
     this.modal.dismiss({
-      ok: true
+      vendedores: this.vendedores
     });
   }
 

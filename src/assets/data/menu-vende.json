@@ -5,6 +5,11 @@
       "redirectTo": "/dashboard"
     },
     {
+      "icon": "fas fa-users",
+      "name": "Cursos",
+      "redirectTo": "/cursos"
+    },
+    {
       "icon": "fas fa-school",
       "name": "Colegios",
       "redirectTo": "/colegios"

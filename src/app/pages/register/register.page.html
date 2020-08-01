@@ -11,7 +11,7 @@
 
 <ion-content class="animated fadeInLeft">
 
-  <form (ngSubmit)="onLogin()" [formGroup]="forma" autocomplete="false">
+  <form (ngSubmit)="registro()" [formGroup]="forma" autocomplete="false">
     
     <ion-slides mode="ios" scrollbar="ios" [options] = "slidesOptions">
       <!-- // =========================================
@@ -25,22 +25,22 @@
           </ion-list>
           <ion-list>
             <ion-item>
-                <ion-label position="floating" class="mb-2">Codigo Colegio</ion-label>
-                <ion-input name="colegio" 
+                <ion-label position="floating" class="mb-2">Codigo Curso</ion-label>
+                <ion-input name="curso" 
                             type="text"
-                            formControlName="colegio"
-                            [class.is-invalid] = "campoNoValido('colegio')" 
+                            formControlName="curCodigo"
+                            [class.is-invalid] = "campoNoValido('curCodigo')" 
                             (keyup.enter) = "merror()"></ion-input>
 
                 <!-- <ion-spinner *ngIf="colegio.pending" name="bubbles"></ion-spinner> -->
-                <small *ngIf="campoNoValido('colegio')" class="text-danger">
-                    El colegio no es valido
+                <small *ngIf="campoNoValido('curCodigo')" class="text-danger">
+                    El curso no es valido
                 </small>
             </ion-item>
           </ion-list>
           <ion-list>
                 <ion-item>                    
-                    <ion-button [ngStyle] = "{ 'pointer-events': campoValido('colegio')? 'auto' : 'none'}"
+                    <ion-button [ngStyle] = "{ 'pointer-events': campoValido('curCodigo')? 'auto' : 'none'}"
                                 (click)="siguiente()" expand="full" fill="outline" size="small">
                         Siguiente
                     </ion-button>

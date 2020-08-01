@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 // UBICA TODOS LOS COLEGIOS
 
@@ -11,8 +12,13 @@ export class UbicarTodosComponent implements OnInit {
 
   @Input() colegios;
 
-  constructor() { }
+  constructor( private modal: ModalController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
+  salir() {
+    this.modal.dismiss();
+  }
 
 }

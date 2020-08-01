@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 
 import { IonicStorageModule } from '@ionic/storage';
-import { ComponentsModule } from './components/components.module';
+import { ComponentsModule } from './components/varios/components.module';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
@@ -24,6 +24,8 @@ import { AgmCoreModule } from '@agm/core';
 import { environment } from '../environments/environment';
 
 import { Camera } from '@ionic-native/camera/ngx';
+import { ChartsModule } from 'ng2-charts';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +33,7 @@ import { Camera } from '@ionic-native/camera/ngx';
   imports: [
     BrowserModule,
     ComponentsModule,
+    ChartsModule,
     HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
