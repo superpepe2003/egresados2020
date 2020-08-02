@@ -28,12 +28,9 @@ export class AlumnosComponent implements OnInit, OnDestroy {
 
   cambiarCurso( event ){
     const usuario = event.alumno;
-    const codigo = event.codigo;
-    const codigoViejo = usuario.curCodigo;
+    const codigo = event.codigo.toLowerCase();
+    const codigoViejo = usuario.curCodigo.toLowerCase();
     usuario.curCodigo = codigo;
-    console.log(usuario);
-    console.log(codigo);
-    console.log(codigoViejo);
 
     this.mAuth.updateAlumno( usuario )
             .then( () => {

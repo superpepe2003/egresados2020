@@ -25,16 +25,17 @@
           </ion-list>
           <ion-list>
             <ion-item>
-                <ion-label position="floating" class="mb-2">Codigo Curso</ion-label>
+                <ion-label position="floating" class="mb-2">Código Curso</ion-label>
                 <ion-input name="curso" 
                             type="text"
                             formControlName="curCodigo"
+                            class="curCodigo"
                             [class.is-invalid] = "campoNoValido('curCodigo')" 
                             (keyup.enter) = "merror()"></ion-input>
 
                 <!-- <ion-spinner *ngIf="colegio.pending" name="bubbles"></ion-spinner> -->
                 <small *ngIf="campoNoValido('curCodigo')" class="text-danger">
-                    El curso no es valido
+                    El curso no es válido
                 </small>
             </ion-item>
           </ion-list>
@@ -61,7 +62,7 @@
                                 [class.is-invalid] = "campoNoValido('email')" ></ion-input>
                     
                     <small *ngIf="campoNoValido('email')" class="text-danger">
-                        No es 1 correo valido
+                        No es 1 correo válido
                     </small>
                 </ion-item>
                 <ion-item>
@@ -72,7 +73,7 @@
                                 [class.is-invalid]= "campoNoValido('password')"></ion-input>
         
                     <small *ngIf="campoNoValido('password')" class="text-danger">
-                        El password debe tener como minimo 6 caracteres
+                        El password debe tener como mínimo 6 caracteres
                     </small>
                 </ion-item>
                 
@@ -116,7 +117,7 @@
             <ion-list>
                 <ion-item>                    
                     <ion-button (click)="atras()" expand="full" fill="outline" size="small">
-                        Atras
+                        Atrás
                     </ion-button>
                 </ion-item>
                 <ion-item>                    
@@ -133,14 +134,14 @@
       <ion-slide class = "grid-repartido">    
             <ion-list>
                 <ion-item>
-                    <ion-label position="floating">Telefono</ion-label>
+                    <ion-label position="floating">Teléfono</ion-label>
                     <ion-input name="telefono" 
                                type="text" 
                                formControlName="tel"
                                [class.is-invalid] = "campoNoValido('tel')" ></ion-input>
                     
                     <small *ngIf="campoNoValido('tel')" class="text-danger">
-                        El telefono es necesario
+                        El teléfono es necesario
                     </small>
                   </ion-item>
             </ion-list>        
@@ -177,7 +178,7 @@
                 </ion-button>
             
                 <ion-button (click)="atras()" expand="full" fill="outline" size="small">
-                    Atras
+                    Atrás
                 </ion-button>
             </ion-list>
                 

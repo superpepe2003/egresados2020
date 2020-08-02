@@ -156,6 +156,7 @@ export class AgregarCursoComponent implements OnInit, OnDestroy {
       curso.estado = 0;
       curso.tempVende = `${curso.temporada}-${curso.creadopor}`;
       curso.cant = 0;
+      curso.codigo = curso.codigo.toLowerCase();
 
       this.mCole.colegios.forEach( resp => {
             if ( resp.nombre === curso.colegio && resp.localidad === curso.localidad){

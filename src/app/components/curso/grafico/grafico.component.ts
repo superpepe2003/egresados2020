@@ -55,6 +55,7 @@ export class GraficoComponent{
     this.cursos = cursos;
     this.cursosDatos = [];
     this.cursosDatosLabel = [];
+    this.cursosDatosAlumnos = [];
     this.estados = [];
     this.total = 0;
     for ( let i = 0; i <= 5 ; i++) {

@@ -49,3 +49,7 @@
     background-color: var(--ion-color-primary);
     color: white;
   }
+
+  ion-input{
+    text-transform: capitalize;
+  }

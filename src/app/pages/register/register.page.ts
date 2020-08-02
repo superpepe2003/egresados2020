@@ -119,7 +119,7 @@ export class RegisterPage implements OnInit{
 
       usuario.redSocial = usuario.redSocial.filter( resp => resp.tipo !== null && resp.user !== null);
 
-      console.log(usuario);
+      usuario.curCodigo = usuario.curCodigo.toLowerCase();
 
       this.mAuth.register( usuario )
           .then( resp => {
