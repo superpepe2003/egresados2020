@@ -31,6 +31,14 @@
     padding-bottom: 1em;
   }
 
+  .grid-repartidox4 {
+    display: grid;
+    height: 100%;
+    grid-template-rows: 1fr 1fr 1fr 5em;
+    grid-template-columns: 1fr;
+    padding-bottom: 1em;
+  }
+
   .grid-repartidox2 {
     display: grid;
     height: 100%;
@@ -61,11 +69,11 @@
   }
   
   .thead-mio{
-    background-color: var(--ion-color-primary);
-    color: white;
+    //background-color: var(--ion-color-primary);
+    //color: white;
   }
 
-  ion-input {
+  .ion-input {
     text-transform: capitalize;
   }
 

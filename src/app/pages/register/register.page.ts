@@ -17,7 +17,7 @@ import { ColesService } from '../../services/coles.service';
 export class RegisterPage implements OnInit{
 
   forma: FormGroup;
-
+  
 
   slidesOptions = {
     allowSlidePrev: false,
@@ -75,7 +75,11 @@ export class RegisterPage implements OnInit{
             tipo: [''],
             user: ['']
           })
-        ])
+        ]),
+      experiencia: ['', [ Validators.required ]],
+      empresas: this.formBuilder.array([]),
+      referencia: ['', [ Validators.required ]],
+      telPadre: ['', [Validators.required]]
     });
 
   }
@@ -90,10 +94,10 @@ export class RegisterPage implements OnInit{
       password: '123123',
       nombre: 'pablo',
       apellido: 'Fretes',
-      curCodigo: 'pol14310',
-      fechaNac: '14/10/2003'
+      curCodigo: 'pol22310',
+      fechaNac: ( new Date() ).toJSON()
     });
-    //console.log(this.forma.controls);
+    // console.log(this.forma.controls);
   }
 
   siguiente() {
@@ -109,8 +113,6 @@ export class RegisterPage implements OnInit{
   }
 
   registro(){
-
-    console.log(this.forma.get('fechaNac').value);
 
     if (this.forma.valid){
       let usuario: IUsuario;
@@ -143,6 +145,17 @@ export class RegisterPage implements OnInit{
   merror(){
     console.log('estoy');
     console.log( this.forma.get('colegio') );
+  }
+
+  onChange(emp: string, isChecked: boolean) {
+    const empresas = this.forma.controls.empresas as FormArray;
+    // if target checked, push to formarray, else remove
+    if (isChecked) {
+      empresas.push(new FormControl(emp));
+    } else {
+      const index = empresas.controls.findIndex(x => x.value === emp);
+      empresas.removeAt(index);
+    }
   }
 
 }

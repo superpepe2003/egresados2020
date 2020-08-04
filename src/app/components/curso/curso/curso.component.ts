@@ -8,6 +8,9 @@ import { AuthService } from '../../../services/auth.service';
 import { ColesService } from '../../../services/coles.service';
 import { UiService } from '../../../services/ui.service';
 
+import * as moment from 'moment';
+import { IEstadoCurso } from '../../../models/estado-curso';
+
 @Component({
   selector: 'app-curso',
   templateUrl: './curso.component.html',
@@ -115,6 +118,10 @@ async cambiarEstado(){
             handler: async () => {
               this.curso.estado = this.curso.estado + 1;
               await this.mCole.updateCurso( this.curso );
+              await this.mCole.createEstadoCurso({
+                  idCurso: this.curso._id, 
+                  estado: this.curso.estado,
+                  fecha: moment( new Date(), 'YYYY/MM/dd').format('DD/MM/YYYY') })
               this.estado = this.estadosPosibles[ this.curso.estado ];
               this.cursoActualiza.emit({ ok: true });
             }
@@ -132,6 +139,70 @@ async cambiarEstado(){
   }
 
 }
+
+async mostrarEstados() {
+  let listaEstados: IEstadoCurso[] = [];
+
+  await this.mCole.cargarEstadosCurso(this.curso._id).toPromise()
+      .then( resp => listaEstados = resp)
+      .catch( err => this.ui.presentToast('Error al cargar los estados'));
+
+  if ( listaEstados.length > 0) {
+
+        let mensaje = `<table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Estados</th>
+            <th scope="col">Fecha</th>
+          </tr>
+        </thead>
+        <tbody> <tr>`;
+
+        listaEstados.map( (item) => {
+            switch (item.estado){
+              case 0:
+                mensaje += `<td>Cargado<td>`;
+                break;
+              case 1:
+                mensaje += `<td>Iniciado<td>`;
+                break;
+              case 2:
+                mensaje += `<td>R. Chico<td>`;
+                break;
+              case 3:
+                mensaje += `<td>R. Padres<td>`;
+                break;
+              case 4:
+                mensaje += `<td>Definicion<td>`;
+                break;
+              case 5:
+                mensaje += `<td>Cerrado<td>`;
+                break;
+            }
+            mensaje += `<td>${item.fecha}</td></tr>`;
+        });
+
+        mensaje += `</tbody></table>`;
+
+        const alerta = await this.mAlert.create({
+          cssClass: 'customClass',
+          header: 'Listado de Estado',
+          message: mensaje,
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel'
+            }
+          ]
+        });
+
+        await alerta.present();
+
+    } else {
+      this.ui.presentToast('Error al cargar los estados');
+    }
+
+ }
 
 
 }

@@ -7,6 +7,9 @@ import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UiService } from '../../../services/ui.service';
 import { IColegio } from '../../../models/colegio';
+import { IEstadoCurso } from '../../../models/estado-curso';
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-agregar-curso',
@@ -16,7 +19,7 @@ import { IColegio } from '../../../models/colegio';
 export class AgregarCursoComponent implements OnInit, OnDestroy {
 
   @Input() curso: ICurso;
-  @Input() isModificar;
+  @Input() isModificar: boolean;
 
   cursosTemporales: ICurso[] = [];
 
@@ -59,7 +62,7 @@ export class AgregarCursoComponent implements OnInit, OnDestroy {
   // AUTOCOMPLETE
   // =========================================
 
-  buscar( e ) {
+  buscar( e: any ) {
     this.coleFiltro = e.detail.value;
     if ( this.coleFiltro.length > 0){
       this.buscaCole = true;
@@ -68,7 +71,7 @@ export class AgregarCursoComponent implements OnInit, OnDestroy {
     }
   }
 
-  elijeCole( item ){
+  elijeCole( item: any ){
     this.forma.controls['colegio'].setValue( item.nombre );
     this.forma.controls['localidad'].setValue( item.localidad );
     this.buscaCole = false;
@@ -80,7 +83,7 @@ export class AgregarCursoComponent implements OnInit, OnDestroy {
     }, 50);
   }
 
-  cambioLocalidad( e ){
+  cambioLocalidad( e: any ){
     if ( !e ){ return this.colegios = this.mCole.colegios; }
     const localidad = e.detail.value;
     if ( localidad.length > 0 ){
@@ -96,7 +99,7 @@ export class AgregarCursoComponent implements OnInit, OnDestroy {
   // FORMULARIO
   // =========================================
 
-  campoNoValido( campo ){
+  campoNoValido( campo: string ){
     return this.forma.get(campo).invalid && this.forma.get(campo).touched;
   }
 
@@ -136,7 +139,7 @@ export class AgregarCursoComponent implements OnInit, OnDestroy {
         nombre: ''
       });
     }
-    //console.log(this.forma.controls);
+    // console.log(this.forma.controls);
   }
 
 
@@ -163,8 +166,15 @@ export class AgregarCursoComponent implements OnInit, OnDestroy {
                 curso.idcolegio = resp._id;
 
                 this.mCole.createCurso( curso )
-                        .then( (r: any) => {
+                        .then( async (r: any) => {
                             this.ui.mostrarInfo('curso', 'El Curso se creo correctamente');
+                            // Cuando el curso se crea se graba la fecha del estado
+                            const estadoCurso: IEstadoCurso = { 
+                              idCurso: curso._id, 
+                              estado: 0, 
+                              fecha: moment( new Date(), 'YYYY/MM/dd').format('DD/MM/YYYY') };
+                            console.log(estadoCurso.fecha);
+                            await this.mCole.createEstadoCurso( estadoCurso );
                             this.cargarForm();
                             this.cursosTemporales.push({...curso});
                           }

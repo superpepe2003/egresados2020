@@ -22,7 +22,6 @@ export class AlumnoComponent implements OnInit, OnDestroy {
                private mCol: ColesService) { }
 
   ngOnInit() {
-    console.log(this.alumno);
   }
 
   async onCambiarCole() {

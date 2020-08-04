@@ -17,6 +17,10 @@ export interface IUsuario {
         tipo: string,
         user: string
     }[];
+    experiencia: boolean;
+    empresas: string[];
+    referencia: boolean;
+    telPadre: string;
     colegios: IColegio[];
 }
 

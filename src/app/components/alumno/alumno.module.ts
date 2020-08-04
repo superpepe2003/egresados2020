@@ -6,6 +6,8 @@ import { AlumnosComponent } from './alumnoscomponent/alumnos.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from '../varios/components.module';
+import { ChartsModule } from 'ng2-charts';
+import { GraficoAlumnoComponent } from './grafico-alumno/grafico-alumno.component';
 
 
 
@@ -14,11 +16,13 @@ import { ComponentsModule } from '../varios/components.module';
     ListarComponent,
     AlumnoComponent,
     AlumnosComponent,
+    GraficoAlumnoComponent
   ],
   imports: [
     ComponentsModule,
     CommonModule,
     IonicModule,
+    ChartsModule,
     FormsModule,
     ReactiveFormsModule,
   ],

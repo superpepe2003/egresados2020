@@ -1,0 +1,32 @@
+<h2>Resumen</h2>
+<hr>
+<div class="chart" style="width: 100%;">
+  <h4>Primer experiencia</h4>
+  <canvas baseChart
+    [data]="expPadres"
+    [labels]="expPadresLabel"
+    [colors]="pieChartColors"
+    [chartType]="doughnutChartType"
+    [legend]="pieChartLegend">
+  </canvas>
+</div>
+<div class="chart" style="width: 100%;">
+  <h4>Hermanos que viajaron</h4>
+  <canvas baseChart
+    [data]="hermanosViajaron"
+    [labels]="hermanosViajaronLabel"
+    [colors]="pieChartColorsEmpresas"
+    [chartType]="doughnutChartType"
+    [legend]="pieChartLegend">
+  </canvas>
+</div>
+<div class="chart" style="width: 100%;">
+  <h4>Referencias Baxtter</h4>
+  <canvas baseChart
+    [data]="refBaxtter"
+    [labels]="refBaxtterLabel"
+    [colors]="pieChartColors"
+    [chartType]="doughnutChartType"
+    [legend]="pieChartLegend">
+  </canvas>
+</div>

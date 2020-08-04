@@ -7,6 +7,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { AuthService } from './auth.service';
 import { IColegio } from '../models/colegio';
 import { ICurso } from '../models/curso';
+import { IEstadoCurso } from '../models/estado-curso';
 
 @Injectable({
   providedIn: 'root'
@@ -209,9 +210,14 @@ export class ColesService implements OnDestroy {
   createCurso( mCurso: ICurso) {
 
     const key = this.db.list('/cursos').push(true).key;
-    console.log(key);
     mCurso._id = key;
-    return this.db.database.ref('cursos/' + key).set(mCurso);
+    return this.db.database.ref('cursos/' + key).set( mCurso );
+    // return new Promise( (resolve, reject) => {
+    //   this.db.database.ref('cursos/' + key).set(mCurso)
+    //       .then( resp => {
+    //         resolve( mCurso );
+    //       })
+    // });
 
   }
 
@@ -220,6 +226,7 @@ export class ColesService implements OnDestroy {
     return this.db.database.ref('cursos/' + mCurso._id).update(mCurso);
   }
 
+  // Incrementa o decrementa el numero de alumnos cuando se cambian de curso
   // si es true incrementa, si es false decrementa
   async updateIncrementaCurso( codigo, add ){
     const cur = await this.db.list<ICurso>('cursos/', ref => ref.orderByChild('codigo')
@@ -241,20 +248,7 @@ export class ColesService implements OnDestroy {
       return this.db.list<ICurso>('/cursos')
                 .valueChanges()
                 .pipe(
-                  first(),
-                  map( resp => {
-                    resp.map( cur => {
-                      this.db.list('/users',
-                                  ref => ref.orderByChild('curCodigo').equalTo(cur.codigo))
-                                  .valueChanges()
-                                  .pipe(
-                                    first()
-                                  ).subscribe( (alum: any) => {
-                                    cur.alumnos = alum || [];
-                                  });
-                    });
-                    return resp;
-                  })
+                  first()
                 );
   }
 
@@ -267,6 +261,22 @@ export class ColesService implements OnDestroy {
                 );
   }
 
+  // =========================================
+  // Estado de los cursos
+  // =========================================
+
+  createEstadoCurso( estadoCurso: IEstadoCurso){
+    console.log( estadoCurso );
+    this.db.database.ref('estadoCurso').push(estadoCurso);
+  }
+
+  cargarEstadosCurso( id: string ){
+    return this.db.list<IEstadoCurso>('/estadoCurso', ref => ref.orderByChild('idCurso').equalTo(id))
+            .valueChanges()
+            .pipe(
+              first()
+            );
+  }
 
   ngOnDestroy() {
     this.subscribe.forEach( resp => resp.unsubscribe());

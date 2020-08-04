@@ -3,7 +3,7 @@
   <ion-card-header class="colorTitulo">
     <ion-card-title color="light" style="text-align: left;">{{curso.nombre}}</ion-card-title>
     <ion-card-subtitle color="light" style="text-align: left;">{{curso.colegio}} - {{ curso.localidad }} </ion-card-subtitle>
-    <ion-chip color="primary" mode="ios" outline="true">
+    <ion-chip color="primary" mode="ios" outline="true" (click) = "mostrarEstados()">
       <ion-label>{{ curso.codigo }}</ion-label>
     </ion-chip>
     

@@ -4,12 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { IUsuario } from '../models/usuario';
-import { environment } from '../../environments/environment';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Componente } from '../models/menu';
 import { Storage } from '@ionic/storage';
 import { first, finalize, tap } from 'rxjs/operators';
-import { NavController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ColesService } from './coles.service';
 
@@ -86,7 +84,6 @@ export class AuthService implements OnDestroy{
                 this.usuario._id = resp.user.uid;
                 usuario._id = resp.user.uid;
                 const us = await this.crearPerfil( usuario );
-                console.log(usuario);
                 if ( usuario.curCodigo ){
                   this.mCole.updateIncrementaCurso(usuario.curCodigo, true);
                 }
@@ -100,15 +97,23 @@ export class AuthService implements OnDestroy{
   }
 
   crearPerfil(usuario: IUsuario) {
-    const userId = usuario._id;
+    // const userId = usuario._id;
 
     const tempUser: any = { ...usuario };
 
     delete tempUser.password;
 
-    return this.db.database.ref('users/' + userId).set(tempUser);
+    return this.db.database.ref('users/' + usuario._id).set(tempUser);
 
   }
+
+  // crearPerfil(usuario: IUsuario){
+  //   const tempUser: any = { ...usuario };
+
+  //   delete tempUser.password;
+
+  //   return this._db.collection('users/').doc(usuario._id).set(tempUser);
+  // }
 
   updateUsuario(usuario: IUsuario) {
     return this.db.database.ref('users/' + this.usuario._id).update(usuario);
@@ -169,6 +174,7 @@ export class AuthService implements OnDestroy{
   // lee el vendedor desde el id guardado en storage para loguear
   async leerUserStorage(){
     this.usuario._id = await this.storage.get('egresadosUser');
+
     if ( this.usuario._id){
       this.authState.next(true);
       await this.cargarPerfil();

@@ -18,7 +18,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
-import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireStorageModule, AngularFireStorage } from '@angular/fire/storage';
 
 import { AgmCoreModule } from '@agm/core';
 import { environment } from '../environments/environment';

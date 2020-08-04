@@ -38,6 +38,28 @@
                     El curso no es válido
                 </small>
             </ion-item>
+            <ion-item>
+                <ion-label position="floating" class="mb-2">Email</ion-label>
+                <ion-input name="email" 
+                            type="email" 
+                            formControlName="email"
+                            [class.is-invalid] = "campoNoValido('email')" ></ion-input>
+                
+                <small *ngIf="campoNoValido('email')" class="text-danger">
+                    No es 1 correo válido
+                </small>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating" class="mb-2">Contraseña</ion-label>
+                <ion-input name="password" 
+                            type="password"
+                            formControlName="password"
+                            [class.is-invalid]= "campoNoValido('password')"></ion-input>
+    
+                <small *ngIf="campoNoValido('password')" class="text-danger">
+                    El password debe tener como mínimo 6 caracteres
+                </small>
+            </ion-item>
           </ion-list>
           <ion-list>
                 <ion-item>                    
@@ -52,34 +74,11 @@
             // 2DO SLIDE DATOS PERSONALES 
             // =========================================  -->
       <ion-slide class = "grid-repartidox2">
-            <ion-list>
-                
-                <ion-item>
-                    <ion-label position="floating" class="mb-2">Email</ion-label>
-                    <ion-input name="email" 
-                                type="email" 
-                                formControlName="email"
-                                [class.is-invalid] = "campoNoValido('email')" ></ion-input>
-                    
-                    <small *ngIf="campoNoValido('email')" class="text-danger">
-                        No es 1 correo válido
-                    </small>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating" class="mb-2">Contraseña</ion-label>
-                    <ion-input name="password" 
-                                type="password"
-                                formControlName="password"
-                                [class.is-invalid]= "campoNoValido('password')"></ion-input>
-        
-                    <small *ngIf="campoNoValido('password')" class="text-danger">
-                        El password debe tener como mínimo 6 caracteres
-                    </small>
-                </ion-item>
-                
+            <ion-list>                
                 <ion-item>
                     <ion-label position="floating" class="mb-2">Nombre</ion-label>
                     <ion-input name="nombre" 
+                                class="ion-input"
                                 type="text" 
                                 formControlName="nombre"
                                 [class.is-invalid] = "campoNoValido('nombre')" ></ion-input>
@@ -93,6 +92,7 @@
                     <ion-label position="floating" class="mb-2">Apellido</ion-label>
                     <ion-input name="apellido" 
                                 type="text" 
+                                class="ion-input"
                                 formControlName="apellido"
                                 [class.is-invalid] = "campoNoValido('apellido')" ></ion-input>
                     
@@ -105,14 +105,36 @@
                     <ion-label position="floating">Fecha de Nacimiento</ion-label>
                     <ion-datetime
                       name="fechaNac"
-                      placeholder="Nacimiento"
                       display-format="DD MMMM YYYY"
                       cancelText="Cancelar!!!"
                       month-names="Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre"
-                      formControlName="fechaNac"                    
+                      formControlName="fechaNac"                
                     >
                     </ion-datetime>
-                  </ion-item>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Teléfono</ion-label>
+                    <ion-input name="telefono" 
+                                type="text" 
+                                formControlName="tel"
+                                [class.is-invalid] = "campoNoValido('tel')" ></ion-input>
+                    
+                    <small *ngIf="campoNoValido('tel')" class="text-danger">
+                        El teléfono es necesario
+                    </small>
+                </ion-item>
+                
+                <ion-item>
+                    <ion-label position="floating">Teléfono de Papá/Mamá</ion-label>
+                    <ion-input name="telPadre" 
+                               type="text" 
+                               formControlName="telPadre"
+                               [class.is-invalid] = "campoNoValido('telPadre')" ></ion-input>
+                    
+                    <small *ngIf="campoNoValido('telPadre')" class="text-danger">
+                        El teléfono es necesario
+                    </small>
+                </ion-item>
             </ion-list>
             <ion-list>
                 <ion-item>                    
@@ -131,21 +153,9 @@
       <!-- // =========================================
            // 3ER SLIDE DATOS Y REDES SOCIALES
            // ========================================= -->
-      <ion-slide class = "grid-repartido">    
+      <ion-slide class = "grid-repartido">         
             <ion-list>
-                <ion-item>
-                    <ion-label position="floating">Teléfono</ion-label>
-                    <ion-input name="telefono" 
-                               type="text" 
-                               formControlName="tel"
-                               [class.is-invalid] = "campoNoValido('tel')" ></ion-input>
-                    
-                    <small *ngIf="campoNoValido('tel')" class="text-danger">
-                        El teléfono es necesario
-                    </small>
-                  </ion-item>
-            </ion-list>        
-            <ion-list>
+                <h5>Ingrese sus Redes Sociales</h5>
                 <table class="table">
                     <thead class="thead-mio">
                         <tr>
@@ -173,16 +183,95 @@
                 
             </ion-list>
             <ion-list>
-                <ion-button (click)="registro()" expand="full">
-                    Registrar
-                </ion-button>
-            
-                <ion-button (click)="atras()" expand="full" fill="outline" size="small">
-                    Atrás
-                </ion-button>
+                <ion-radio-group value="biff" formControlName="experiencia">
+                  <ion-list-header>
+                    <h5>Es la 1er experiencia para tus papás</h5>
+                  </ion-list-header>
+              
+                  <ion-item>
+                    <ion-label>Si</ion-label>
+                    <ion-radio slot="end" value="true"></ion-radio>
+                  </ion-item>
+    
+                  <ion-item>
+                    <ion-label>No</ion-label>
+                    <ion-radio slot="end" value="false"></ion-radio>
+                  </ion-item>
+                </ion-radio-group>
+            </ion-list>    
+            <ion-list>
+                <ion-item>                    
+                    <ion-button (click)="atras()" expand="full" fill="outline" size="small">
+                        Atrás
+                    </ion-button>
+                </ion-item>
+                <ion-item>                    
+                    <ion-button (click)="siguiente()" expand="full" fill="outline" size="small">
+                        Siguiente
+                    </ion-button>
+                </ion-item>
             </ion-list>
                 
       </ion-slide> 
+      <!-- // =========================================
+           // 4TO SLIDE CON PREGUNTAS
+           // ========================================= -->
+      <ion-slide class = "grid-repartido">  
+          
+        <ion-list formArrayName="empresas">
+            <h5>Tenes hermanos que viajaron con alguna de estas compañias</h5>            
+            <ion-item>
+                <ion-label>Travel Rock</ion-label>
+                <ion-checkbox (ionChange)="onChange('Travel Rock', $event.detail.checked)"
+                               slot="end" value="Travel Rock"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-label>Baxtter</ion-label>
+                <ion-checkbox (ionChange)="onChange('Baxtter', $event.detail.checked)"
+                              slot="end" value="Baxtter"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-label>Max Dream</ion-label>
+                <ion-checkbox (ionChange)="onChange('Max Dream', $event.detail.checked)"
+                              slot="end" value="Max Dream"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-label>Otras</ion-label>
+                <ion-checkbox (ionChange)="onChange('Otras', $event.detail.checked)"
+                              slot="end" value="Otras"></ion-checkbox>
+            </ion-item>
+
+            <p style="font-size: 0.9rem; color: rgb(120,120,120)">*Podes elegir más de 1</p>
+        </ion-list>
+                
+        <ion-list>
+            <ion-radio-group value="biff" formControlName="referencia">
+                <ion-list-header>
+                <h5>Tenes referencia de Baxtter</h5>
+                </ion-list-header>
+            
+                <ion-item>
+                <ion-label>Si</ion-label>
+                <ion-radio slot="end" value="true"></ion-radio>
+                </ion-item>
+
+                <ion-item>
+                <ion-label>No</ion-label>
+                <ion-radio slot="end" value="false"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+        
+        <ion-list>
+            <ion-button (click)="registro()" expand="full">
+                Registrar
+            </ion-button>
+        
+            <ion-button (click)="atras()" expand="full" fill="outline" size="small">
+                Atrás
+            </ion-button>
+        </ion-list>
+      </ion-slide>
     </ion-slides>
 
 

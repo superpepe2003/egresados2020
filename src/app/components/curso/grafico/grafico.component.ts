@@ -18,11 +18,14 @@ interface IEstados {
 export class GraficoComponent{
 
   public cursosDatosLabel: string[] = [];
+  
   public cursosDatosAlumnos: number[] = [];
   public cursosDatos: number[] = [];
+
   public pieChartType: ChartType = 'pie';
   public doughnutChartType: ChartType = 'doughnut';
   public polarAreaChartType: ChartType = 'polarArea';
+  
   public pieChartLegend = true;
   pieChartColors = [
     {

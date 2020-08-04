@@ -6,7 +6,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Observable } from 'rxjs';
 import { Componente } from './models/menu';
 import { AuthService } from './services/auth.service';
-import { ColesService } from './services/coles.service';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +26,6 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-  //   await this.authService.inicial();
   }
 
   async initializeApp() {
