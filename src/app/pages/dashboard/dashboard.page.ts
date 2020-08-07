@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType } from 'chart.js';
+import { IPost } from '../../models/post';
+import { PostsServiceService } from '../../services/posts-service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,9 +10,15 @@ import { ChartType } from 'chart.js';
 })
 export class DashboardPage implements OnInit {
 
-  constructor() { }
+  posts: IPost[];
 
-  ngOnInit() {
+  constructor( private dbPost: PostsServiceService) { }
+
+  async ngOnInit() {
+    await this.dbPost.cargarPost().toPromise()
+        .then( resp => {
+          this.posts = resp;
+        });
   }
 
 }

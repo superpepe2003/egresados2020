@@ -1,13 +1,12 @@
 import { Injectable, OnDestroy, Component } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { IUsuario } from '../models/usuario';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Componente } from '../models/menu';
 import { Storage } from '@ionic/storage';
-import { first, finalize, tap } from 'rxjs/operators';
+import { first, finalize, tap, switchMap } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ColesService } from './coles.service';
 
@@ -32,7 +31,6 @@ export class AuthService implements OnDestroy{
 
 
   constructor( private storage: Storage,
-               private router: Router,
                private mAuth: AngularFireAuth,
                private db: AngularFireDatabase,
                private http: HttpClient,

@@ -43,8 +43,7 @@ export class ColegioComponent implements OnInit {
 
     // const { data } = await popover.onDidDismiss();
     const { data } = await popover.onWillDismiss();
-
-    console.log('menu: ', data.item);
+    
     switch ( data.item ){
       case 1:
         this.ejecutarModificar( cole );

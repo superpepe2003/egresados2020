@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IUsuario } from '../../../models/usuario';
 import { ChartType, ChartOptions } from 'chart.js';
-import { totalmem } from 'os';
 
 @Component({
   selector: 'app-grafico-alumno',
@@ -10,7 +9,6 @@ import { totalmem } from 'os';
 })
 export class GraficoAlumnoComponent implements OnInit {
 
-  //@Input() Alumnos: IUsuario[] = [];
 
   // Datos
   public expPadres: number[] = [];

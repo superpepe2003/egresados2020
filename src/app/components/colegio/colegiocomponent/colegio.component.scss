@@ -48,3 +48,7 @@ ion-chip ion-label{
     font-size: 1rem;
     color: rgb( 120,120,120);
 }
+
+ion-card-title, ion-card-subtitle {
+    text-transform: capitalize;
+}

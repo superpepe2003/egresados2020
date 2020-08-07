@@ -43,6 +43,10 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'dashboard'
+  },
+  {
+    path: 'agregar-post',
+    loadChildren: () => import('./pages/agregar-post/agregar-post.module').then( m => m.AgregarPostPageModule)
   }
 ];
 @NgModule({

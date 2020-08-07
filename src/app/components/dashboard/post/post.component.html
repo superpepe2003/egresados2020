@@ -1,0 +1,45 @@
+<div class="post" *ngIf="post">
+
+  <ion-item lines="none">
+
+    <ion-label>
+      <h3>{{ post.titulo }}</h3>
+      <h5>{{ post.subtitulo }}</h5>
+    </ion-label>
+  </ion-item>
+
+
+  <!-- ngIf imgs.... -->
+  <ion-slides pager="true" *ngIf="post.imgs.length > 1">
+
+    <ion-slide *ngFor="let img of post.imgs; let i = index"
+               class="image-slide"
+               [style] ="(img | domStyleBackground)">
+    </ion-slide>
+
+  </ion-slides>
+
+  <ion-slides *ngIf="post.imgs.length === 1" [options]="slideSoloOpts">
+
+    <ion-slide class="image-slide"
+               [style]="(post.imgs[0] | domStyleBackground)">
+    </ion-slide>
+
+  </ion-slides>
+
+  <ion-item lines="none">
+    <ion-icon slot="start" name="heart"></ion-icon>
+    <ion-icon slot="end" name="bookmark"></ion-icon>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-label text-wrap>
+        {{ post.mensaje }}
+    </ion-label>
+  </ion-item>
+
+
+</div>
+
+
+

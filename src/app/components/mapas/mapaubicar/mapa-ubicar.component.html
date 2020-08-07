@@ -13,15 +13,16 @@
 
 </agm-map>
 
-<agm-map *ngIf="isTodos"
+<agm-map *ngIf="isTodos && colegios"
     [latitude]="ubicacion.lat"
     [longitude]="ubicacion.lng"
     [zoom]="8"
     [zoomControl]="true"
                 >
-
-                <agm-marker *ngFor="let cole of colegios"
-                [latitude]="cole.ubicacion.lat" 
-                [longitude]="cole.ubicacion.lng"></agm-marker>
+                <ng-container *ngFor="let cole of colegios">
+                    <agm-marker *ngIf="cole.ubicacion"
+                                [latitude]="cole.ubicacion.lat" 
+                                [longitude]="cole.ubicacion.lng"></agm-marker>
+                </ng-container>
 
   </agm-map>

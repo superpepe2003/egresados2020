@@ -6,6 +6,7 @@ import { ImagePipe } from './image.pipe';
 import { PipesPipe } from './filtro-municipio.pipe';
 import { FiltroColegiosPipe } from './filtro-colegios.pipe';
 import { FiltroCursosPipe } from './filtro-cursos.pipe';
+import { DomStyleBackgroundPipe } from './dom-style-background.pipe';
 
 
 
@@ -16,7 +17,8 @@ import { FiltroCursosPipe } from './filtro-cursos.pipe';
     ImagePipe,
     PipesPipe,
     FiltroColegiosPipe,
-    FiltroCursosPipe
+    FiltroCursosPipe,
+    DomStyleBackgroundPipe
   ],
   imports: [
     CommonModule
@@ -27,7 +29,8 @@ import { FiltroCursosPipe } from './filtro-cursos.pipe';
     ImagePipe,
     PipesPipe,
     FiltroColegiosPipe,
-    FiltroCursosPipe
+    FiltroCursosPipe, 
+    DomStyleBackgroundPipe
   ]
 })
 export class PipesModule { }

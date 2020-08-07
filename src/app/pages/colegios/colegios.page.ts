@@ -64,7 +64,7 @@ export class ColegiosPage implements OnDestroy {
     const ubicarTodosModal = await this.modalCtrl.create({
       component: UbicarTodosComponent,
       componentProps: {
-        colegios: this.colegios
+        colegios: this.mCole.colegios
       }
     });
 
