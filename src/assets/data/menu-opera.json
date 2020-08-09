@@ -1,0 +1,12 @@
+[
+    {
+      "icon": "fas fa-file-alt",
+      "name": "Cartelera",
+      "redirectTo": "/dashboard"
+    },
+    {
+      "icon": "far fa-newspaper",
+      "name": "Agregar Post",
+      "redirectTo": "/agregar-post"
+    }
+]

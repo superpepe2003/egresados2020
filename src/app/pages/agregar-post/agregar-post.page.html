@@ -3,12 +3,12 @@
     <ion-title>
       Nuevo Post
     </ion-title>
-
+    <ion-spinner slot="end" name="bubbles" *ngIf = "Guardando"></ion-spinner>
     <ion-buttons slot="end">
       <ion-button 
-                  [disabled]="post.mensaje.length < 1 || cargandoGeo"
+                  [disabled]="post.mensaje.length < 1 && post.titulo.length < 0"
+                  (click)="crearPost()"
                   color="primary">
-                  <!-- (click)="crearPost()" -->
         Compartir
       </ion-button>
     </ion-buttons>
@@ -21,6 +21,14 @@
   <ion-list>
     
     <ion-item>
+      <ion-label position="floating">Título</ion-label>
+      <ion-input [(ngModel)]="post.titulo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">SubTítulo</ion-label>
+      <ion-input [(ngModel)]="post.subtitulo"></ion-input>
+    </ion-item>
+    <ion-item>
       <ion-label position="floating">Mensaje</ion-label>
       <ion-textarea [(ngModel)]="post.mensaje"></ion-textarea>
     </ion-item>
@@ -28,21 +36,22 @@
   </ion-list>
 
   <ion-row>
-    <ion-col size="6">
+    
+    <ion-col size="12">
       <ion-button expand="full"
                   shape="round"
-                  (click)="camara()">
-        <ion-icon slot="start" name="camera"></ion-icon>
-        Cámara
-      </ion-button>
-    </ion-col>
-    <ion-col size="6">
-      <ion-button expand="full"
-                  shape="round"
-                  (click)="libreria()">
+                  (click)="cargarImagenes()">
         <ion-icon slot="start" name="images"></ion-icon>
         Galería
       </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="3" *ngFor="let image of tempImages; let i = index">
+      <ion-card (click) = "sacarImagen(i)">
+        <img [src]="image | image">
+      </ion-card>
     </ion-col>
   </ion-row>
   
@@ -53,6 +62,7 @@
       </ion-card>
     </ion-col>
   </ion-row>
+
 
 
 </ion-content>

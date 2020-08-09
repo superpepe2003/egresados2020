@@ -14,11 +14,19 @@ export class DashboardPage implements OnInit {
 
   constructor( private dbPost: PostsServiceService) { }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.cargarPost();
+  }
+
+  doRefresh(e){
+    this.cargarPost();
+  }
+
+  async cargarPost(){
     await this.dbPost.cargarPost().toPromise()
-        .then( resp => {
-          this.posts = resp;
-        });
+    .then( resp => {
+      this.posts = resp;
+    });
   }
 
 }

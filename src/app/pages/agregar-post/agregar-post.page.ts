@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PostsServiceService } from '../../services/posts-service.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { IPost } from '../../models/post';
+import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { UiService } from '../../services/ui.service';
+import { Subscription } from 'rxjs';
 
 declare var window: any;
 
@@ -15,63 +20,70 @@ export class AgregarPostPage implements OnInit {
   tempImages: string[] = [];
   cargandoGeo = false;
 
-  post = {
+
+  Guardando = false;
+
+  post: IPost = {
     mensaje: '',
-    posicion: false
+    titulo: '',
+    subtitulo: '',
+    imgs: []
   };
 
   constructor(private postsService: PostsServiceService,
               private route: Router,
-              private camera: Camera) { }
+              private ui: UiService,
+              private imgPicker: ImagePicker,
+              private file: File) { }
 
   ngOnInit() {
   }
 
-  camara() {
+  cargarImagenes() {
 
-    const options: CameraOptions = {
-      quality: 60,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      correctOrientation: true,
-      sourceType: this.camera.PictureSourceType.CAMERA
-    };
+    const options: ImagePickerOptions = {
+      maximumImagesCount: 5,
+      width: 600,
+      height: 600
+    }
 
-    this.procesarImagen( options );
+    this.imgPicker.getPictures(options).then((results) => {
+
+      // tslint:disable-next-line:prefer-for-of
+      for ( const value of results) {
+        const fileName = value.substring(value.lastIndexOf('/') + 1);
+        const path = value.substring(0, value.lastIndexOf('/') + 1);
+
+        this.file.readAsDataURL(path, fileName).then(( base64string ) => {
+          this.tempImages.push( base64string );
+         });
+      }
+    }, (err) => { });
+  }
+
+  sacarImagen( i: number){
+    this.tempImages.splice( i, 1);
+  }
+
+  crearPost() {
+     this.Guardando = true;
+     this.postsService.crearPost( this.post, this.tempImages )
+         .then( resp => {
+            this.limpiarCampos();
+            this.Guardando = false;
+          })
+         .catch( err => this.ui.mostrarError('Error', 'No se pudo Guardar el Post'));
+  }
+
+  limpiarCampos(){
+    // tslint:disable-next-line:forin
+    for ( const valor in this.post ){
+      if ( valor === 'imgs'){ return this.post.imgs = []; }
+      this.post[valor] = '';
+    }
+    this.tempImages = [];
 
   }
 
-  libreria() {
-
-    const options: CameraOptions = {
-      quality: 60,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      correctOrientation: true,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
-    };
-
-    this.procesarImagen( options );
-
-  }
-
-
-  procesarImagen( options: CameraOptions ) {
-
-    this.camera.getPicture(options).then( ( imageData ) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-
-      const img = window.Ionic.WebView.convertFileSrc( imageData );
-
-      //this.postsService.subirImagen( imageData );
-      this.tempImages.push( img );
-
-     }, (err) => {
-      // Handle error
-     });
-  }
 
 }

@@ -188,6 +188,9 @@ export class AuthService implements OnDestroy{
         case 'VENDE':
           uri = '/assets/data/menu-vende.json';
           break;
+        case 'OPERA':
+          uri = '/assets/data/menu-opera.json';
+          break;
         default :
           uri = '/assets/data/menu.json';
           break;

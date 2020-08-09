@@ -26,6 +26,10 @@ import { environment } from '../environments/environment';
 import { Camera } from '@ionic-native/camera/ngx';
 import { ChartsModule } from 'ng2-charts';
 
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { File } from '@ionic-native/file/ngx';
+
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -48,6 +52,8 @@ import { ChartsModule } from 'ng2-charts';
   providers: [
     StatusBar,
     Camera,
+    ImagePicker,
+    File,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

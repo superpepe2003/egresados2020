@@ -8,6 +8,10 @@
 </ion-header>
  
 <ion-content>
-    <!-- Posts -->
-    <app-posts *ngIf="posts" [posts]="posts"></app-posts>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh( $event )">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <!-- Posts -->
+  <app-posts *ngIf="posts" [posts]="posts"></app-posts>
 </ion-content>
