@@ -5,5 +5,5 @@ export interface IPost {
     mensaje?: string;
     titulo?: string;
     subtitulo?: string;
-    created?: string;
+    created?: number;
 }

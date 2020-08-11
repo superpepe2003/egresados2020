@@ -27,6 +27,7 @@ export class AgregarPostPage implements OnInit {
     mensaje: '',
     titulo: '',
     subtitulo: '',
+    created: 0,
     imgs: []
   };
 
@@ -67,6 +68,7 @@ export class AgregarPostPage implements OnInit {
 
   crearPost() {
      this.Guardando = true;
+     this.post.created = new Date().getTime() * -1;
      this.postsService.crearPost( this.post, this.tempImages )
          .then( resp => {
             this.limpiarCampos();
@@ -76,13 +78,15 @@ export class AgregarPostPage implements OnInit {
   }
 
   limpiarCampos(){
+    this.tempImages = [];
     // tslint:disable-next-line:forin
     for ( const valor in this.post ){
-      if ( valor === 'imgs'){ return this.post.imgs = []; }
-      this.post[valor] = '';
+      if ( valor === 'imgs'){
+        this.post.imgs = [];
+      } else {
+        this.post[valor] = '';
+      }
     }
-    this.tempImages = [];
-
   }
 
 

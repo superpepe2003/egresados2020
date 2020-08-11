@@ -3,7 +3,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { IPost } from '../models/post';
 import { first, finalize } from 'rxjs/operators';
-import { zip, forkJoin, Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 
 
 @Injectable({
@@ -13,6 +13,8 @@ export class PostsServiceService implements OnDestroy {
 
   contadorFotos = 0;
   totalFotos = 0;
+
+  numPostxPagina = 10;
 
   refer = [];
 
@@ -29,17 +31,18 @@ export class PostsServiceService implements OnDestroy {
     return new Promise( (resolve) => {
       this.subcribe.push( this.subirFotos( tempImage, post._id )
           .subscribe( resp => {
-            const url$ = this.refer.map( ref => this.fbstorage.ref( ref ).getDownloadURL())
-      
+            const url$ = this.refer.map( ref => this.fbstorage.ref( ref ).getDownloadURL());
+
             // COMPLETO TODOS LOS OBSERVABLES PARA RECUPERAR EL URL DE LAS FOTOS
-      
+
+            // tslint:disable-next-line: deprecation
             this.subcribe.push( forkJoin( ...url$ )
               .subscribe( r => {
-                for( const value of r ) { post.imgs.push(value); }
+                for ( const value of r ) { post.imgs.push(value); }
                 // GRABO EL POST
-                this.db.database.ref('post/' + post._id).set(post).then( resp => resolve( true ) );
+                this.db.database.ref('post/' + post._id).set(post).then( r => resolve( r ) );
               })
-            ); 
+            );
           })
         );
     });
@@ -47,35 +50,50 @@ export class PostsServiceService implements OnDestroy {
 
 
   subirFotos( tempImage: string[], id ) {
-  
+
       let i = -1;
-  
+
       const pro$ = tempImage.map( image => {
-  
          i++;
          const ref = `post/${ id }/${ i }`;
-  
+
          this.refer.push( ref );
          return this.fbstorage.ref( ref ).putString( image, 'data_url').snapshotChanges();
-  
-      });
-  
-      // COMPLETO TODOS LOS OBSERVABLES DE SUBIR FOTOS
 
+      });
+
+      // COMPLETO TODOS LOS OBSERVABLES DE SUBIR FOTOS
+      // tslint:disable-next-line: deprecation
       return forkJoin( ...pro$ );
 
   }
 
+  // Paso 1 boolean si es un pull y el ultimo que cargue
+  cargarPost( pull: boolean, last: number ){
+    let total = this.numPostxPagina;
+    if ( !pull ) { total = this.numPostxPagina + 1; }
 
-  cargarPost(){
-    return this.db.list<IPost>('post/')
+    return this.db.list<IPost>('post/', ref => ref
+              .orderByChild('created')
+              .startAt( last )
+              .limitToFirst(total)
+              )
            .valueChanges()
            .pipe(
              first()
            );
   }
 
-  ngOnDestroy () {
+  grabarTeimpoInvertido( posts: IPost[] ) {
+    let dia = 0;
+    posts.forEach( resp => {
+      dia++;
+      resp.created = new Date(`${ dia }/08/2020`).getTime() * -1;
+      this.db.database.ref('post/' + resp._id ).update( resp );
+    });
+  }
+
+  ngOnDestroy() {
     this.subcribe.forEach( resp => resp.unsubscribe());
   }
 
