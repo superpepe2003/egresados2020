@@ -38,9 +38,13 @@ export class PostsServiceService implements OnDestroy {
             // tslint:disable-next-line: deprecation
             this.subcribe.push( forkJoin( ...url$ )
               .subscribe( r => {
+                console.log(r);
                 for ( const value of r ) { post.imgs.push(value); }
                 // GRABO EL POST
-                this.db.database.ref('post/' + post._id).set(post).then( r => resolve( r ) );
+                this.db.database.ref('post/' + post._id).set(post).then( r => {
+                  this.refer = [];
+                  resolve( r );
+                });
               })
             );
           })
